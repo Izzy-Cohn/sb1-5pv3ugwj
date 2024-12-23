@@ -28,7 +28,7 @@ export function Hero() {
           whileTap={{ scale: 0.95 }}
           className="bg-primary text-white px-8 py-3 rounded-full text-lg font-semibold hover:bg-opacity-90 transition-colors"
         >
-          Explore Collection
+          Explore Recommendations
         </motion.button>
       </motion.div>
     </div>
