@@ -18,7 +18,7 @@ export function Header() {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
         <div className="flex justify-between items-center relative h-full">
-          <div className="absolute top-0 left-30 h-32 w-32 rounded-full bg-white/100 backdrop-blur-sm flex items-center justify-center shadow-sm">
+          <div className="fixed top-0 left-8 h-20 w-20 md:h-28 md:w-28 lg:h-36 lg:w-36 rounded-full bg-white/100 backdrop-blur-sm flex items-center justify-center shadow-sm">
             <Logo />
           </div>
           <div className="flex-1 flex justify-center h-full">
