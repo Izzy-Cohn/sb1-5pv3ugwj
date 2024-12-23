@@ -2,6 +2,8 @@ import { Routes, Route } from 'react-router-dom';
 import { Header } from './components/Header';
 import { HomePage } from './pages/HomePage';
 import { CategoryPage } from './pages/CategoryPage';
+import { RankingsPage } from './pages/RankingsPage';
+import { ProductPage } from './pages/ProductPage';
 
 export default function App() {
   return (
@@ -10,6 +12,8 @@ export default function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/:category" element={<CategoryPage />} />
+        <Route path="/sneakers/rankings/:slug" element={<RankingsPage />} />
+        <Route path="/sneakers/rankings/:slug/:productId" element={<ProductPage />} />
       </Routes>
     </div>
   );
