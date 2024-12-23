@@ -1,19 +1,24 @@
-import { Dumbbell, Footprints, ShoppingBag } from 'lucide-react';
+import { Footprints, Palmtree, Moon, Briefcase } from 'lucide-react';
 
 export const categories = [
   {
-    icon: Dumbbell,
-    title: 'Athletic',
-    description: 'Performance shoes for every sport'
-  },
-  {
     icon: Footprints,
-    title: 'Casual',
-    description: 'Everyday comfort and style'
+    title: 'Sneakers',
+    description: 'Trendy and comfortable sneakers for every occasion'
   },
   {
-    icon: ShoppingBag,
-    title: 'Formal',
-    description: 'Classic designs for professional wear'
+    icon: Palmtree,
+    title: 'Sandals',
+    description: 'Perfect for warm weather and casual outings'
+  },
+  {
+    icon: Moon,
+    title: 'Slippers',
+    description: 'Cozy comfort for your home relaxation'
+  },
+  {
+    icon: Briefcase,
+    title: 'Shoes',
+    description: 'Classic footwear for any style and setting'
   }
 ];
