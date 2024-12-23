@@ -16,13 +16,13 @@ export function Header() {
       animate={{ y: 0 }}
       className="fixed top-0 left-0 right-0 bg-white/100 backdrop-blur-sm shadow-sm z-50 h-16"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center relative">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
+        <div className="flex justify-between items-center relative h-full">
           <div className="absolute top-0 left-30 h-32 w-32 rounded-full bg-white/100 backdrop-blur-sm flex items-center justify-center shadow-sm">
             <Logo />
           </div>
-          <div className="flex-1 flex justify-center">
-            <nav className="hidden md:flex space-x-8">
+          <div className="flex-1 flex justify-center h-full">
+            <nav className="hidden md:flex space-x-8 items-center h-full">
               {navItems.map((item) => (
                 <NavItem key={item.href} {...item} />
               ))}
