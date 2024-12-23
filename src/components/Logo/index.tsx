@@ -5,14 +5,12 @@ export function Logo() {
     <motion.div 
       className="flex items-center"
       whileHover={{ scale: 1.05 }}
-      whileTap={{ scale: 0.95 }}
-    >
+      whileTap={{ scale: 0.95 }}>
       <img
-        src="/logo.png"
+        src="/logo.svg"
         alt="News on Shoes Logo"
-        className="h-12 w-12"
+        className="h-48 w-48"
       />
-      <span className="ml-2 text-xl font-bold text-gray-900">ShoeSpot</span>
     </motion.div>
   );
 }
