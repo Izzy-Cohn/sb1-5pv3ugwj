@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 
 interface NavItemProps {
   title: string;
@@ -7,12 +8,15 @@ interface NavItemProps {
 
 export function NavItem({ title, href }: NavItemProps) {
   return (
-    <motion.a
-      href={href}
+    <motion.div
       whileHover={{ scale: 1.05 }}
-      className="text-gray-700 hover:text-secondary transition-colors"
     >
-      {title}
-    </motion.a>
+      <Link
+        to={href}
+        className="text-gray-700 hover:text-secondary transition-colors"
+      >
+        {title}
+      </Link>
+    </motion.div>
   );
 }
