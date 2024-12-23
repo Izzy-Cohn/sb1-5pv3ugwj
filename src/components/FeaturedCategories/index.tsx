@@ -1,9 +1,10 @@
 import { CategoryCard } from './CategoryCard';
 import { categories } from './categories';
+import { forwardRef } from 'react';
 
-export function FeaturedCategories() {
+export const FeaturedCategories = forwardRef<HTMLElement>((_, ref) => {
   return (
-    <section className="py-20 bg-gray-50">
+    <section ref={ref} className="py-20 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4">
         <h2 className="text-3xl font-bold text-center mb-12">Our Categories</h2>
         
@@ -19,4 +20,4 @@ export function FeaturedCategories() {
       </div>
     </section>
   );
-}
+});
