@@ -1,6 +1,8 @@
 import { useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { categories } from '../components/FeaturedCategories/categories';
+import { RankingCard } from '../components/Rankings/RankingCard';
+import { rankings } from '../components/Rankings/rankings';
 
 export function CategoryPage() {
   const { category } = useParams();
@@ -17,6 +19,7 @@ export function CategoryPage() {
   }
 
   const Icon = categoryData.icon;
+  const isSneakers = category?.toLowerCase() === 'sneakers';
 
   return (
     <div className="pt-16">
@@ -38,7 +41,13 @@ export function CategoryPage() {
 
       <section className="max-w-7xl mx-auto px-4 py-16">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {[...Array(6)].map((_, index) => (
+          {isSneakers ? rankings.map((ranking, index) => (
+            <RankingCard
+              key={ranking.slug}
+              {...ranking}
+              index={index}
+            />
+          )) : [...Array(6)].map((_, index) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, y: 20 }}
