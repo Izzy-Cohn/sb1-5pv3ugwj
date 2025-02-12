@@ -18,11 +18,11 @@ export const rankingsData: RankingsData = {
     title: 'Best Inserts and Pads of 2025',
     items: [
       {
-        name: 'ComfortPro Elite',
-        brand: 'OrthoTech',
-        description: 'Premium orthotic inserts with advanced arch support and shock absorption. Perfect for all-day comfort and pain relief.',
-        imageUrl: 'https://images.unsplash.com/photo-1595341888016-a392ef81b7de',
-        price: '$49.99'
+        name: 'PowerStep Pulse Maxx Running Insoles',
+        brand: 'PowerStep',
+        description: 'Overpronation Corrective Orthotic Inserts for Running Shoes - Maximum Ankle, Foot Pain Relief & Arch Support Insoles (M 5-5.5, F 7-7.5).',
+        imageUrl: 'https://m.media-amazon.com/images/I/81qfPtgpVYL._AC_SL1500_.jpg',
+        price: '$47.95'
       },
       {
         name: 'ErgoFlex Plus',

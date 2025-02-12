@@ -5,51 +5,62 @@ import { Features } from '../components/ProductProfile/Features';
 import { ProsAndCons } from '../components/ProductProfile/ProsAndCons';
 import { VideoReview } from '../components/ProductProfile/VideoReview';
 import { rankingsData } from '../components/Rankings/RankingsList/rankingsData';
+import { Shield, Layers, Footprints } from 'lucide-react';
 
 export function ProductPage() {
-  const { category, productId } = useParams();
+  useParams();
   
-  // TODO: Replace with actual data fetching
   const product = {
-    id: '1',
-    name: 'UltraSupport X-1',
-    brand: 'StrideTech',
-    description: 'Revolutionary arch support system with adaptive cushioning.',
-    longDescription: `The UltraSupport X-1 represents the pinnacle of comfort and support technology. 
-    Designed with advanced biomechanics in mind, this shoe delivers exceptional stability and cushioning 
-    for those who need it most. The revolutionary arch support system adapts to your foot's unique shape, 
-    while the medical-grade orthotic inserts provide unparalleled comfort.`,
-    price: '$189.99',
+    id: 'powerstep-pulse-maxx',
+    name: 'PowerStep Pulse Maxx Running Insoles',
+    brand: 'PowerStep',
+    description: 'Overpronation Corrective Orthotic Inserts for Running Shoes',
+    longDescription: `The PowerStep Pulse Maxx Running Insoles represent the latest in orthotic technology, 
+    specifically designed for runners who need maximum support and stability. These insoles feature a unique 
+    combination of firm but flexible support shell, dual-layer cushioning, and a deep heel cradle for enhanced 
+    stability. The angled exterior heel platform helps control excess motion while running, making them perfect 
+    for overpronation and various foot conditions. The insoles are topped with an antimicrobial fabric that 
+    helps reduce heat and friction while maintaining a fresh environment for your feet.`,
+    price: '$47.95',
     images: [
-      'https://images.unsplash.com/photo-1542291026-7eec264c27ff',
-      'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a',
-      'https://images.unsplash.com/photo-1600185365483-26d7a4cc7519',
-      'https://images.unsplash.com/photo-1605348532760-6753d2c43329'
+      'https://m.media-amazon.com/images/I/81qfPtgpVYL._AC_SL1500_.jpg',
+      'https://m.media-amazon.com/images/I/81Ry9MtQIBL._AC_SL1500_.jpg',
+      'https://m.media-amazon.com/images/I/81H4DjkegrL._AC_SL1500_.jpg',
+      'https://m.media-amazon.com/images/I/81vNBVW1SDL._AC_SL1500_.jpg'
     ],
     features: [
       {
-        title: 'Adaptive Cushioning',
-        description: 'Smart foam technology that adjusts to your stride and weight.',
-        imageUrl: 'https://images.unsplash.com/photo-1514989940723-e8e51635b782'
+        title: 'Maximum Support Shell',
+        description: 'Medical-grade foot support with firm but flexible shell for motion control and stability.',
+        icon: Shield
       },
       {
-        title: 'Stability Control',
-        description: 'Advanced support system that prevents overpronation.',
-        imageUrl: 'https://images.unsplash.com/photo-1469395446868-fb6a048d5ca3'
+        title: 'Dual-Layer Cushioning',
+        description: 'VCT® Variable Cushioning Technology combines targeted and controlled cushioning for superior comfort.',
+        icon: Layers
+      },
+      {
+        title: 'Deep Heel Cradle',
+        description: 'Enhanced stability and support with angled exterior heel platform for motion control.',
+        icon: Footprints
       }
     ],
     pros: [
-      'Exceptional arch support',
-      'Breathable mesh upper',
-      'Durable construction',
-      'Wide toe box'
+      'Maximum arch support and stability',
+      'Excellent motion control for overpronation',
+      'Antimicrobial top fabric',
+      'Deep heel cradle for enhanced stability',
+      'Dual-layer cushioning system',
+      'Can be trimmed to fit',
+      'Made in the USA'
     ],
     cons: [
-      'Premium price point',
-      'Break-in period required',
-      'Limited color options'
+      'May feel firm initially and require break-in period',
+      'Might be too rigid for neutral runners',
+      'Higher price point compared to basic insoles',
+      'May not fit all shoe types'
     ],
-    videoId: 'dQw4w9WgXcQ'
+    videoId: 'dQw4w9WgXcQ' // Placeholder - would need actual product video ID
   };
 
   if (!product) {
@@ -76,9 +87,16 @@ export function ProductPage() {
               <p className="text-3xl font-bold text-primary mb-6">{product.price}</p>
               <p className="text-gray-700 mb-8">{product.longDescription}</p>
               
-              <button className="w-full bg-[#f3a736] text-white py-3 rounded-lg font-semibold hover:bg-[#f3a736]/90 transition-colors">
-                Buy on Amazon
-              </button>
+              <a 
+                href="https://amzn.to/4jUFzBO" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="block w-full"
+              >
+                <button className="w-full bg-[#f3a736] text-white py-3 rounded-lg font-semibold hover:bg-[#f3a736]/90 transition-colors">
+                  Buy on Amazon
+                </button>
+              </a>
             </motion.div>
           </div>
         </div>
