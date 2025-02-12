@@ -27,6 +27,10 @@ export const rankings = [
 
 export const notJustShoesRankings = [
   {
+    title: 'Best Inserts and Pads of 2025',
+    slug: 'best-inserts'
+  },
+  {
     title: 'Best Lifestyle Accessories of 2025',
     slug: 'lifestyle-accessories'
   },
