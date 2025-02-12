@@ -16,6 +16,8 @@ export function RankingsPage() {
     );
   }
 
+  const isInsertCategory = slug === 'best-inserts';
+
   return (
     <div className="pt-16">
       <div className="relative h-[40vh] flex items-center justify-center bg-[#43b9c7]">
@@ -29,7 +31,7 @@ export function RankingsPage() {
             {rankingData.title}
           </h1>
           <p className="text-xl text-gray-900 font-medium drop-shadow-[0_1px_1px_rgba(255,255,255,0.5)]">
-            Top 10 Expert-Tested Picks
+            {isInsertCategory ? 'Expert-Tested Picks' : 'Top 10 Expert-Tested Picks'}
           </p>
         </motion.div>
       </div>

@@ -12,8 +12,8 @@ export default function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/:category" element={<CategoryPage />} />
-        <Route path="/sneakers/rankings/:slug" element={<RankingsPage />} />
-        <Route path="/sneakers/rankings/:slug/:productId" element={<ProductPage />} />
+        <Route path="/:category/rankings/:slug" element={<RankingsPage />} />
+        <Route path="/:category/rankings/:slug/:productId" element={<ProductPage />} />
       </Routes>
     </div>
   );

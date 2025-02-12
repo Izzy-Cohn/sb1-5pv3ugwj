@@ -14,6 +14,46 @@ interface RankingsData {
 }
 
 export const rankingsData: RankingsData = {
+  'best-inserts': {
+    title: 'Best Inserts and Pads of 2025',
+    items: [
+      {
+        name: 'ComfortPro Elite',
+        brand: 'OrthoTech',
+        description: 'Premium orthotic inserts with advanced arch support and shock absorption. Perfect for all-day comfort and pain relief.',
+        imageUrl: 'https://images.unsplash.com/photo-1595341888016-a392ef81b7de',
+        price: '$49.99'
+      },
+      {
+        name: 'ErgoFlex Plus',
+        brand: 'StepWell',
+        description: 'Customizable memory foam insoles that mold to your feet. Features moisture-wicking technology and pressure point relief.',
+        imageUrl: 'https://images.unsplash.com/photo-1595341887985-cf2e6c8f81a8',
+        price: '$39.99'
+      },
+      {
+        name: 'SportFlex Pro',
+        brand: 'ActiveLife',
+        description: 'High-performance athletic inserts designed for impact absorption and stability. Ideal for sports and active lifestyles.',
+        imageUrl: 'https://images.unsplash.com/photo-1595341888016-a392ef81b7de',
+        price: '$44.99'
+      },
+      {
+        name: 'HealWell Supreme',
+        brand: 'PodiatricPlus',
+        description: 'Therapeutic gel inserts with targeted heel cushioning. Perfect for those with plantar fasciitis or heel pain.',
+        imageUrl: 'https://images.unsplash.com/photo-1595341887985-cf2e6c8f81a8',
+        price: '$54.99'
+      },
+      {
+        name: 'ArchSupport Ultra',
+        brand: 'FootCare',
+        description: 'Professional-grade arch support inserts with antimicrobial coating. Provides excellent stability and alignment.',
+        imageUrl: 'https://images.unsplash.com/photo-1595341888016-a392ef81b7de',
+        price: '$47.99'
+      }
+    ]
+  },
   'flat-feet': {
     title: 'Best Sneakers of 2025 for Flat Feet',
     items: [

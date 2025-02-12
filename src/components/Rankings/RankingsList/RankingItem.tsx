@@ -14,7 +14,8 @@ interface RankingItemProps {
 }
 
 export function RankingItem({ rank, name, brand, description, imageUrl, price, index }: RankingItemProps) {
-  const { slug } = useParams();
+  const { slug, category } = useParams();
+  const isInsertCategory = slug === 'best-inserts';
   
   const getMedalColor = (rank: number) => {
     switch (rank) {
@@ -32,9 +33,11 @@ export function RankingItem({ rank, name, brand, description, imageUrl, price, i
       transition={{ delay: index * 0.1 }}
       className="flex gap-6 bg-white rounded-lg shadow-sm p-6 relative"
     >
-      <div className="absolute -left-4 top-6 w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center font-bold">
-        {rank}
-      </div>
+      {!isInsertCategory && (
+        <div className="absolute -left-4 top-6 w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center font-bold">
+          {rank}
+        </div>
+      )}
       
       <div className="w-48 h-48 flex-shrink-0">
         <img
@@ -50,7 +53,7 @@ export function RankingItem({ rank, name, brand, description, imageUrl, price, i
             <h3 className="text-xl font-bold text-gray-900">{name}</h3>
             <p className="text-gray-600 font-medium">{brand}</p>
           </div>
-          {rank <= 3 && (
+          {!isInsertCategory && rank <= 3 && (
             <Medal className={`w-6 h-6 ${getMedalColor(rank)}`} />
           )}
         </div>
@@ -59,7 +62,7 @@ export function RankingItem({ rank, name, brand, description, imageUrl, price, i
         
         <div className="mt-4 flex items-center justify-between">
           <span className="text-lg font-semibold text-primary">{price}</span>
-          <Link to={`/sneakers/rankings/${slug}/${name.toLowerCase().replace(/\s+/g, '-')}`}>
+          <Link to={`/${category?.toLowerCase()}/rankings/${slug}/${name.toLowerCase().replace(/\s+/g, '-')}`}>
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
