@@ -1,12 +1,13 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { rankings } from '../Rankings/rankings';
+import { rankings, notJustShoesRankings } from '../Rankings/rankings';
 
 interface DropdownMenuProps {
   isOpen: boolean;
+  category: string;
 }
 
-export function DropdownMenu({ isOpen }: DropdownMenuProps) {
+export function DropdownMenu({ isOpen, category }: DropdownMenuProps) {
   const container = {
     hidden: { opacity: 0 },
     show: {
@@ -20,6 +21,15 @@ export function DropdownMenu({ isOpen }: DropdownMenuProps) {
   const item = {
     hidden: { opacity: 0, y: -10 },
     show: { opacity: 1, y: 0 }
+  };
+
+  const getRankings = () => {
+    switch (category.toLowerCase()) {
+      case 'not just shoes':
+        return notJustShoesRankings;
+      default:
+        return rankings;
+    }
   };
 
   return (
@@ -36,10 +46,10 @@ export function DropdownMenu({ isOpen }: DropdownMenuProps) {
             initial="hidden"
             animate="show"
           >
-            {rankings.map((ranking) => (
+            {getRankings().map((ranking) => (
               <motion.div key={ranking.slug} variants={item}>
                 <Link
-                  to={`/sneakers/rankings/${ranking.slug}`}
+                  to={`/${category.toLowerCase().replace(/\s+/g, '-')}/rankings/${ranking.slug}`}
                   className="block px-3 py-1 text-xs text-gray-700 hover:bg-gray-50/50 hover:text-secondary transition-colors"
                 >
                   {ranking.title}
