@@ -7,6 +7,7 @@ const navItems = [
   { title: 'Sandals', href: '/sandals' },
   { title: 'Slippers', href: '/slippers' },
   { title: 'Shoes', href: '/shoes' },
+  { title: 'Not Just Shoes', href: '/not-just-shoes' },
 ];
 
 export function Header() {

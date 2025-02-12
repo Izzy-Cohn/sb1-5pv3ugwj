@@ -10,7 +10,7 @@ interface NavItemProps {
 
 export function NavItem({ title, href }: NavItemProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const hasSneakersDropdown = title === 'Sneakers';
+  const hasDropdown = title === 'Sneakers' || title === 'Not Just Shoes';
 
   return (
     <motion.div
@@ -25,7 +25,7 @@ export function NavItem({ title, href }: NavItemProps) {
       >
         {title}
       </Link>
-      {hasSneakersDropdown && <DropdownMenu isOpen={isOpen} />}
+      {hasDropdown && <DropdownMenu isOpen={isOpen} category={title} />}
     </motion.div>
   );
 }

@@ -2,12 +2,14 @@ import { useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { categories } from '../components/FeaturedCategories/categories';
 import { RankingCard } from '../components/Rankings/RankingCard';
-import { rankings } from '../components/Rankings/rankings';
+import { rankings, notJustShoesRankings } from '../components/Rankings/rankings';
 
 export function CategoryPage() {
   const { category } = useParams();
+  const normalizedCategory = category?.replace(/-/g, ' ');
+  
   const categoryData = categories.find(
-    (c) => c.title.toLowerCase() === category?.toLowerCase()
+    (c) => c.title.toLowerCase() === normalizedCategory?.toLowerCase()
   );
 
   if (!categoryData) {
@@ -19,7 +21,19 @@ export function CategoryPage() {
   }
 
   const Icon = categoryData.icon;
-  const isSneakers = category?.toLowerCase() === 'sneakers';
+  const currentCategory = normalizedCategory?.toLowerCase();
+  const getRankings = () => {
+    switch (currentCategory) {
+      case 'sneakers':
+        return rankings;
+      case 'not just shoes':
+        return notJustShoesRankings;
+      default:
+        return null;
+    }
+  };
+
+  const categoryRankings = getRankings();
 
   return (
     <div className="pt-16">
@@ -41,40 +55,44 @@ export function CategoryPage() {
 
       <section className="max-w-7xl mx-auto px-4 py-16">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {isSneakers ? rankings.map((ranking, index) => (
-            <RankingCard
-              key={ranking.slug}
-              {...ranking}
-              index={index}
-            />
-          )) : [...Array(6)].map((_, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
-              className="bg-white rounded-lg shadow-sm overflow-hidden"
-            >
-              <img
-                src={`https://images.unsplash.com/photo-${1550399105 + index}?auto=format&fit=crop&q=80`}
-                alt="Product"
-                className="w-full h-48 object-cover"
+          {categoryRankings ? (
+            categoryRankings.map((ranking, index) => (
+              <RankingCard
+                key={ranking.slug}
+                {...ranking}
+                index={index}
               />
-              <div className="p-4">
-                <h3 className="text-lg font-semibold mb-2">Product {index + 1}</h3>
-                <p className="text-gray-600 text-sm">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                </p>
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="mt-4 bg-primary text-white px-4 py-2 rounded-full text-sm font-semibold hover:bg-opacity-90 transition-colors"
-                >
-                  Learn More
-                </motion.button>
-              </div>
-            </motion.div>
-          ))}
+            ))
+          ) : (
+            [...Array(6)].map((_, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1 }}
+                className="bg-white rounded-lg shadow-sm overflow-hidden"
+              >
+                <img
+                  src={`https://images.unsplash.com/photo-${1550399105 + index}?auto=format&fit=crop&q=80`}
+                  alt="Product"
+                  className="w-full h-48 object-cover"
+                />
+                <div className="p-4">
+                  <h3 className="text-lg font-semibold mb-2">Product {index + 1}</h3>
+                  <p className="text-gray-600 text-sm">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                  </p>
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="mt-4 bg-primary text-white px-4 py-2 rounded-full text-sm font-semibold hover:bg-opacity-90 transition-colors"
+                  >
+                    Learn More
+                  </motion.button>
+                </div>
+              </motion.div>
+            ))
+          )}
         </div>
       </section>
     </div>

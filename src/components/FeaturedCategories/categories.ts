@@ -1,4 +1,4 @@
-import { Footprints, Palmtree, Moon, Briefcase } from 'lucide-react';
+import { Footprints, Palmtree, Moon, Briefcase, HandHeart } from 'lucide-react';
 
 export const categories = [
   {
@@ -20,5 +20,10 @@ export const categories = [
     icon: Briefcase,
     title: 'Shoes',
     description: 'Classic footwear for any style and setting'
+  },
+  {
+    icon: HandHeart,
+    title: 'Not Just Shoes',
+    description: 'Explore our curated collection of lifestyle essentials'
   }
 ];
