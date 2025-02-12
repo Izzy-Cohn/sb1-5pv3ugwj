@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { Award } from 'lucide-react';
 
 interface RankingCardProps {
@@ -9,8 +9,11 @@ interface RankingCardProps {
 }
 
 export function RankingCard({ title, slug, index }: RankingCardProps) {
+  const { category } = useParams();
+  const formattedCategory = category?.toLowerCase().replace(/\s+/g, '-');
+  
   return (
-    <Link to={`/sneakers/rankings/${slug}`}>
+    <Link to={`/${formattedCategory}/rankings/${slug}`}>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}

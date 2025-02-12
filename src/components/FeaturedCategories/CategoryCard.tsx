@@ -10,8 +10,10 @@ interface CategoryCardProps {
 }
 
 export function CategoryCard({ icon: Icon, title, description, index }: CategoryCardProps) {
+  const formattedUrl = title.toLowerCase().replace(/\s+/g, '-');
+  
   return (
-    <Link to={`/${title.toLowerCase()}`}>
+    <Link to={`/${formattedUrl}`}>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}

@@ -16,6 +16,8 @@ interface RankingItemProps {
 export function RankingItem({ rank, name, brand, description, imageUrl, price, index }: RankingItemProps) {
   const { slug, category } = useParams();
   const isInsertCategory = slug === 'best-inserts';
+  const formattedCategory = category?.toLowerCase().replace(/\s+/g, '-');
+  const formattedName = name.toLowerCase().replace(/\s+/g, '-');
   
   const getMedalColor = (rank: number) => {
     switch (rank) {
@@ -62,7 +64,7 @@ export function RankingItem({ rank, name, brand, description, imageUrl, price, i
         
         <div className="mt-4 flex items-center justify-between">
           <span className="text-lg font-semibold text-primary">{price}</span>
-          <Link to={`/${category?.toLowerCase()}/rankings/${slug}/${name.toLowerCase().replace(/\s+/g, '-')}`}>
+          <Link to={`/${formattedCategory}/rankings/${slug}/${formattedName}`}>
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
