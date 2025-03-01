@@ -2,7 +2,7 @@ import { Routes, Route } from 'react-router-dom';
 import { Header } from './components/Header';
 import { HomePage } from './pages/HomePage';
 import { CategoryPage } from './pages/CategoryPage';
-import { RankingsPage } from './pages/RankingsPage';
+import { RecommendationsPage } from './pages/RecommendationsPage';
 import { ProductPage } from './pages/ProductPage';
 
 export default function App() {
@@ -12,8 +12,8 @@ export default function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/:category" element={<CategoryPage />} />
-        <Route path="/:category/rankings/:slug" element={<RankingsPage />} />
-        <Route path="/:category/rankings/:slug/:productId" element={<ProductPage />} />
+        <Route path="/:category/recommendations/:slug" element={<RecommendationsPage />} />
+        <Route path="/:category/recommendations/:slug/:productId" element={<ProductPage />} />
       </Routes>
     </div>
   );

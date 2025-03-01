@@ -4,7 +4,7 @@ import { ImageGallery } from '../components/ProductProfile/ImageGallery';
 import { Features } from '../components/ProductProfile/Features';
 import { ProsAndCons } from '../components/ProductProfile/ProsAndCons';
 import { VideoReview } from '../components/ProductProfile/VideoReview';
-import { rankingsData } from '../components/Rankings/RankingsList/rankingsData';
+import { recommendationsData } from '../components/Recommendations/RecommendationsList/recommendationsData';
 import { Shield, Layers, Footprints } from 'lucide-react';
 
 export function ProductPage() {

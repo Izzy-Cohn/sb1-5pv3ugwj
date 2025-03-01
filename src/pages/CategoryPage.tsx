@@ -1,8 +1,8 @@
 import { useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { categories } from '../components/FeaturedCategories/categories';
-import { RankingCard } from '../components/Rankings/RankingCard';
-import { rankings, notJustShoesRankings } from '../components/Rankings/rankings';
+import { RecommendationCard } from '../components/Recommendations/RecommendationCard';
+import { recommendations, notJustShoesRecommendations } from '../components/Recommendations/recommendations';
 
 export function CategoryPage() {
   const { category } = useParams();
@@ -22,18 +22,18 @@ export function CategoryPage() {
 
   const Icon = categoryData.icon;
   const currentCategory = normalizedCategory?.toLowerCase();
-  const getRankings = () => {
+  const getRecommendations = () => {
     switch (currentCategory) {
       case 'sneakers':
-        return rankings;
+        return recommendations;
       case 'not just shoes':
-        return notJustShoesRankings;
+        return notJustShoesRecommendations;
       default:
         return null;
     }
   };
 
-  const categoryRankings = getRankings();
+  const categoryRecommendations = getRecommendations();
 
   return (
     <div className="pt-16">
@@ -55,11 +55,11 @@ export function CategoryPage() {
 
       <section className="max-w-7xl mx-auto px-4 py-16">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {categoryRankings ? (
-            categoryRankings.map((ranking, index) => (
-              <RankingCard
-                key={ranking.slug}
-                {...ranking}
+          {categoryRecommendations ? (
+            categoryRecommendations.map((recommendation, index) => (
+              <RecommendationCard
+                key={recommendation.slug}
+                {...recommendation}
                 index={index}
               />
             ))
