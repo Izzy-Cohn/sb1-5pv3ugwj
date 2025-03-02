@@ -1,14 +1,17 @@
 import { useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { RecommendationItem } from '../components/Recommendations/RecommendationsList/RecommendationItem';
-import { recommendationsData } from '../components/Recommendations/RecommendationsList/recommendationsData';
+import { productCategoriesData } from '../components/Recommendations/RecommendationsList/recommendationsData';
 import { Award } from 'lucide-react';
 
 export function RecommendationsPage() {
-  const { slug } = useParams();
-  const recommendationData = slug ? recommendationsData[slug] : null;
+  const { category, slug } = useParams();
+  
+  // Find the category and recommendation data using the URL parameters
+  const categoryData = category ? productCategoriesData[category] : null;
+  const recommendationData = categoryData && slug ? categoryData.recommendations[slug] : null;
 
-  if (!recommendationData) {
+  if (!categoryData || !recommendationData) {
     return (
       <div className="h-screen flex items-center justify-center">
         <h1 className="text-2xl text-gray-600">Recommendation not found</h1>

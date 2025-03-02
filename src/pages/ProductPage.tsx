@@ -5,11 +5,31 @@ import { Features } from '../components/ProductProfile/Features';
 import { ProsAndCons } from '../components/ProductProfile/ProsAndCons';
 import { VideoReview } from '../components/ProductProfile/VideoReview';
 import { Shield, Layers, Footprints } from 'lucide-react';
+import { productCategoriesData } from '../components/Recommendations/RecommendationsList/recommendationsData';
+import { useState, useEffect } from 'react';
 
-export function ProductPage() {
-  useParams();
-  
-  const product = {
+interface ProductDetail {
+  id: string;
+  name: string;
+  brand: string;
+  description: string;
+  longDescription: string;
+  price: string;
+  images: string[];
+  features: {
+    title: string;
+    description: string;
+    icon: React.ElementType;
+  }[];
+  pros: string[];
+  cons: string[];
+  videoId: string;
+  amazonUrl?: string;
+}
+
+// This would eventually be moved to a database or API
+const productDetails: Record<string, ProductDetail> = {
+  'powerstep-pulse-maxx-running-insoles': {
     id: 'powerstep-pulse-maxx',
     name: 'PowerStep Pulse Maxx Running Insoles',
     brand: 'PowerStep',
@@ -59,10 +79,59 @@ export function ProductPage() {
       'Higher price point compared to basic insoles',
       'May not fit all shoe types'
     ],
-    videoId: 'dQw4w9WgXcQ' // Placeholder - would need actual product video ID
-  };
+    videoId: 'dQw4w9WgXcQ', // Placeholder
+    amazonUrl: 'https://www.amazon.com/dp/B09K4N4CWD?social_share=cm_sw_r_cso_em_apin_dp_79ZQZZ7BZYKZ5B43HFAM&starsLeft=1&th=1&linkCode=sl1&tag=newsonshoes-20&linkId=c8f5f8897bcba893e65d843f7b32b08e&language=en_US&ref_=as_li_ss_tl'
+  }
+};
 
-  if (!product) {
+export function ProductPage() {
+  const { category, slug, productId } = useParams();
+  const [product, setProduct] = useState<ProductDetail | null>(null);
+  const [basicProductInfo, setBasicProductInfo] = useState<any>(null);
+
+  useEffect(() => {
+    // First check if we have detailed product info
+    if (productId && productDetails[productId]) {
+      setProduct(productDetails[productId]);
+      return;
+    }
+
+    // If not, try to find basic product info from the data structure
+    if (category && slug && productId) {
+      const categoryData = productCategoriesData[category];
+      if (categoryData && categoryData.recommendations[slug]) {
+        const items = categoryData.recommendations[slug].items;
+        const formattedProductId = productId.replace(/-/g, ' ');
+        
+        // Find the product with a case-insensitive match on the name
+        const foundProduct = items.find(item => 
+          item.name.toLowerCase() === formattedProductId
+        );
+        
+        if (foundProduct) {
+          setBasicProductInfo(foundProduct);
+        }
+      }
+    }
+  }, [category, slug, productId]);
+
+  // Use the data from productDetails if available, otherwise fallback to basic info
+  const displayProduct = product || (basicProductInfo ? {
+    id: productId,
+    name: basicProductInfo.name,
+    brand: basicProductInfo.brand,
+    description: basicProductInfo.description,
+    longDescription: basicProductInfo.description,
+    price: basicProductInfo.price,
+    images: [basicProductInfo.imageUrl],
+    features: [],
+    pros: [],
+    cons: [],
+    videoId: '',
+    amazonUrl: basicProductInfo.amazonUrl
+  } : null);
+
+  if (!displayProduct) {
     return (
       <div className="h-screen flex items-center justify-center">
         <h1 className="text-2xl text-gray-600">Product not found</h1>
@@ -74,46 +143,54 @@ export function ProductPage() {
     <div className="pt-16">
       <div className="max-w-7xl mx-auto px-4 py-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          <ImageGallery images={product.images} />
+          <ImageGallery images={displayProduct.images} />
           
           <div>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
             >
-              <h1 className="text-4xl font-bold mb-2">{product.name}</h1>
-              <p className="text-xl text-gray-600 mb-4">{product.brand}</p>
-              <p className="text-3xl font-bold text-primary mb-6">{product.price}</p>
-              <p className="text-gray-700 mb-8">{product.longDescription}</p>
+              <h1 className="text-4xl font-bold mb-2">{displayProduct.name}</h1>
+              <p className="text-xl text-gray-600 mb-4">{displayProduct.brand}</p>
+              <p className="text-3xl font-bold text-primary mb-6">{displayProduct.price}</p>
+              <p className="text-gray-700 mb-8">{displayProduct.longDescription}</p>
               
-              <a 
-                href="https://amzn.to/4jUFzBO" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="block w-full"
-              >
-                <button className="w-full bg-[#f3a736] text-white py-3 rounded-lg font-semibold hover:bg-[#f3a736]/90 transition-colors">
-                  Buy on Amazon
-                </button>
-              </a>
+              {displayProduct.amazonUrl ? (
+                <a 
+                  href={displayProduct.amazonUrl} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="block w-full"
+                >
+                  <button className="w-full bg-[#f3a736] text-white py-3 rounded-lg font-semibold hover:bg-[#f3a736]/90 transition-colors">
+                    Buy on Amazon
+                  </button>
+                </a>
+              ) : null}
             </motion.div>
           </div>
         </div>
 
-        <section className="mt-24">
-          <h2 className="text-3xl font-bold mb-12">Key Features</h2>
-          <Features features={product.features} />
-        </section>
+        {displayProduct.features && displayProduct.features.length > 0 && (
+          <section className="mt-24">
+            <h2 className="text-3xl font-bold mb-12">Key Features</h2>
+            <Features features={displayProduct.features} />
+          </section>
+        )}
 
-        <section className="mt-24">
-          <h2 className="text-3xl font-bold mb-12">Pros & Cons</h2>
-          <ProsAndCons pros={product.pros} cons={product.cons} />
-        </section>
+        {displayProduct.pros && displayProduct.pros.length > 0 && displayProduct.cons && displayProduct.cons.length > 0 && (
+          <section className="mt-24">
+            <h2 className="text-3xl font-bold mb-12">Pros & Cons</h2>
+            <ProsAndCons pros={displayProduct.pros} cons={displayProduct.cons} />
+          </section>
+        )}
 
-        <section className="mt-24">
-          <h2 className="text-3xl font-bold mb-12">Video Review</h2>
-          <VideoReview videoId={product.videoId} />
-        </section>
+        {displayProduct.videoId && (
+          <section className="mt-24">
+            <h2 className="text-3xl font-bold mb-12">Video Review</h2>
+            <VideoReview videoId={displayProduct.videoId} />
+          </section>
+        )}
       </div>
     </div>
   );

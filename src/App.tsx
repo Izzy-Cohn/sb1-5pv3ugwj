@@ -4,6 +4,7 @@ import { HomePage } from './pages/HomePage';
 import { CategoryPage } from './pages/CategoryPage';
 import { RecommendationsPage } from './pages/RecommendationsPage';
 import { ProductPage } from './pages/ProductPage';
+import { AdminPage } from './pages/AdminPage';
 
 export default function App() {
   return (
@@ -14,6 +15,7 @@ export default function App() {
         <Route path="/:category" element={<CategoryPage />} />
         <Route path="/:category/recommendations/:slug" element={<RecommendationsPage />} />
         <Route path="/:category/recommendations/:slug/:productId" element={<ProductPage />} />
+        <Route path="/admin" element={<AdminPage />} />
       </Routes>
     </div>
   );
