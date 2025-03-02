@@ -3,7 +3,8 @@ import { productCategoriesData } from '../components/Recommendations/Recommendat
 interface NewProductInfo {
   name: string;
   imageUrl: string;
-  category: string;
+  productCategory: string;
+  recommendationCategory: string;
   amazonUrl: string;
 }
 
@@ -46,28 +47,16 @@ export function extractBrandFromName(name: string): string {
  * Adds a new product to the data structure
  */
 export function addNewProduct(productInfo: NewProductInfo): void {
-  const { name, imageUrl, category, amazonUrl } = productInfo;
+  const { name, imageUrl, productCategory, recommendationCategory, amazonUrl } = productInfo;
   
-  // Extract the category and subcategory
-  let productCategory: string;
-  let recommendationSlug: string;
-  
-  // Find the category based on the provided category title
-  const categoryEntry = Object.entries(productCategoriesData).find(([, data]) => {
-    return Object.entries(data.recommendations).some(([slug, recData]) => {
-      if (recData.title === category) {
-        recommendationSlug = slug;
-        return true;
-      }
-      return false;
-    });
-  });
-  
-  if (!categoryEntry) {
-    throw new Error(`Category "${category}" not found in the product data`);
+  // Validate that the categories exist
+  if (!productCategoriesData[productCategory]) {
+    throw new Error(`Product category "${productCategory}" not found`);
   }
   
-  [productCategory] = categoryEntry;
+  if (!productCategoriesData[productCategory].recommendations[recommendationCategory]) {
+    throw new Error(`Recommendation category "${recommendationCategory}" not found in ${productCategory}`);
+  }
   
   // Create the new product object
   const newProduct = {
@@ -80,12 +69,9 @@ export function addNewProduct(productInfo: NewProductInfo): void {
   };
   
   // Add the product to the data structure
-  productCategoriesData[productCategory].recommendations[recommendationSlug!].items.unshift(newProduct);
+  productCategoriesData[productCategory].recommendations[recommendationCategory].items.unshift(newProduct);
   
-  console.log(`Successfully added ${name} to ${category}`);
-  
-  // In a real application, you would save this to a database or file
-  // For now, it just updates the in-memory data structure
+  console.log(`Successfully added ${name} to ${productCategoriesData[productCategory].recommendations[recommendationCategory].title}`);
 }
 
 /**

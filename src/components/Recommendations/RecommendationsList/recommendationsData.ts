@@ -24,8 +24,8 @@ export interface ProductCategoriesData {
 }
 
 export const productCategoriesData: ProductCategoriesData = {
-  'shoes': {
-    title: 'Shoes',
+  'sneakers': {
+    title: 'Sneakers',
     recommendations: {
       'flat-feet': {
         title: 'Best Sneakers of 2025 for Flat Feet',
@@ -118,6 +118,73 @@ export const productCategoriesData: ProductCategoriesData = {
             price: '$189.99'
           }
         ]
+      },
+      'heel-pain': {
+        title: 'Best Sneakers of 2025 for Heel Pain',
+        items: [
+          {
+            name: 'UltraSupport X-1',
+            brand: 'StrideTech',
+            description: 'Revolutionary arch support system with adaptive cushioning perfect for flat feet. Features medical-grade orthotic inserts and stability control.',
+            imageUrl: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff',
+            price: '$189.99'
+          }
+        ]
+      },
+      'ball-of-foot-pain': {
+        title: 'Best Sneakers of 2025 for Ball-of-Foot Pain',
+        items: [
+          {
+            name: 'UltraSupport X-1',
+            brand: 'StrideTech',
+            description: 'Revolutionary arch support system with adaptive cushioning perfect for flat feet. Features medical-grade orthotic inserts and stability control.',
+            imageUrl: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff',
+            price: '$189.99'
+          }
+        ]
+      }
+    }
+  },
+  'sandals': {
+    title: 'Sandals',
+    recommendations: {
+      'flat-feet': {
+        title: 'Best Sandals of 2025 for Flat Feet',
+        items: []
+      },
+      'normal-high-arches': {
+        title: 'Best Sandals of 2025 for Normal to High Arches',
+        items: []
+      },
+      'knee-and-hip-pain': {
+        title: 'Best Sandals of 2025 for Knee & Hip Pain',
+        items: []
+      }
+    }
+  },
+  'slippers': {
+    title: 'Slippers',
+    recommendations: {
+      'flat-feet': {
+        title: 'Best Slippers of 2025 for Flat Feet',
+        items: []
+      },
+      'normal-high-arches': {
+        title: 'Best Slippers of 2025 for Normal to High Arches',
+        items: []
+      },
+      'knee-and-hip-pain': {
+        title: 'Best Slippers of 2025 for Knee & Hip Pain',
+        items: []
+      }
+    }
+  },
+  'shoes': {
+    title: 'Shoes',
+    recommendations: {
+      'no-hands': {
+        title: 'Best "No Hands" Shoes of 2025',
+        items: []
       }
     }
   },
@@ -164,6 +231,22 @@ export const productCategoriesData: ProductCategoriesData = {
             price: '$47.99'
           }
         ]
+      },
+      'lifestyle-accessories': {
+        title: 'Best Lifestyle Accessories of 2025',
+        items: []
+      },
+      'athletic-wear': {
+        title: 'Top Athletic Wear Collections of 2025',
+        items: []
+      },
+      'fashion-essentials': {
+        title: 'Must-Have Fashion Essentials of 2025',
+        items: []
+      },
+      'sustainable-products': {
+        title: 'Best Sustainable Products of 2025',
+        items: []
       }
     }
   }

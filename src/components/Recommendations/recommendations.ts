@@ -11,8 +11,8 @@ export interface ProductCategory {
 
 export const productCategories: ProductCategory[] = [
   {
-    title: 'Shoes',
-    slug: 'shoes',
+    title: 'Sneakers',
+    slug: 'sneakers',
     recommendations: [
       {
         title: 'Best Sneakers of 2025 for Flat Feet',
@@ -33,9 +33,51 @@ export const productCategories: ProductCategory[] = [
       {
         title: 'Best Sneakers of 2025 for Ball-of-Foot Pain',
         slug: 'ball-of-foot-pain'
+      }
+    ]
+  },
+  {
+    title: 'Sandals',
+    slug: 'sandals',
+    recommendations: [
+      {
+        title: 'Best Sandals of 2025 for Flat Feet',
+        slug: 'flat-feet'
       },
       {
-        title: 'Best "No Hands" Sneakers of 2025',
+        title: 'Best Sandals of 2025 for Normal to High Arches',
+        slug: 'normal-high-arches'
+      },
+      {
+        title: 'Best Sandals of 2025 for Knee & Hip Pain',
+        slug: 'knee-and-hip-pain'
+      }
+    ]
+  },
+  {
+    title: 'Slippers',
+    slug: 'slippers',
+    recommendations: [
+      {
+        title: 'Best Slippers of 2025 for Flat Feet',
+        slug: 'flat-feet'
+      },
+      {
+        title: 'Best Slippers of 2025 for Normal to High Arches',
+        slug: 'normal-high-arches'
+      },
+      {
+        title: 'Best Slippers of 2025 for Knee & Hip Pain',
+        slug: 'knee-and-hip-pain'
+      }
+    ]
+  },
+  {
+    title: 'Shoes',
+    slug: 'shoes',
+    recommendations: [
+      {
+        title: 'Best "No Hands" Shoes of 2025',
         slug: 'no-hands'
       }
     ]
@@ -68,6 +110,6 @@ export const productCategories: ProductCategory[] = [
   }
 ];
 
-// For backward compatibility until codebase is fully updated
-export const recommendations = productCategories.find(cat => cat.slug === 'shoes')?.recommendations || [];
+// For backward compatibility
+export const recommendations = productCategories.find(cat => cat.slug === 'sneakers')?.recommendations || [];
 export const notJustShoesRecommendations = productCategories.find(cat => cat.slug === 'not-just-shoes')?.recommendations || []; 
