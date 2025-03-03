@@ -64,8 +64,8 @@ INSERT INTO product_categories (slug, title) VALUES
 INSERT INTO recommendation_categories (product_category_id, slug, title)
 SELECT 
   pc.id,
-  slug,
-  title
+  data.rec_slug,
+  data.rec_title
 FROM (
   VALUES 
     ('flat-feet', 'Best Sneakers of 2025 for Flat Feet'),
@@ -73,7 +73,7 @@ FROM (
     ('knee-and-hip-pain', 'Best Sneakers of 2025 for Knee & Hip Pain'),
     ('heel-pain', 'Best Sneakers of 2025 for Heel Pain'),
     ('ball-of-foot-pain', 'Best Sneakers of 2025 for Ball-of-Foot Pain')
-) AS data(slug, title)
+) AS data(rec_slug, rec_title)
 CROSS JOIN product_categories pc
 WHERE pc.slug = 'sneakers';
 
@@ -81,14 +81,14 @@ WHERE pc.slug = 'sneakers';
 INSERT INTO recommendation_categories (product_category_id, slug, title)
 SELECT 
   pc.id,
-  slug,
-  title
+  data.rec_slug,
+  data.rec_title
 FROM (
   VALUES 
     ('flat-feet', 'Best Sandals of 2025 for Flat Feet'),
     ('normal-high-arches', 'Best Sandals of 2025 for Normal to High Arches'),
     ('knee-and-hip-pain', 'Best Sandals of 2025 for Knee & Hip Pain')
-) AS data(slug, title)
+) AS data(rec_slug, rec_title)
 CROSS JOIN product_categories pc
 WHERE pc.slug = 'sandals';
 
@@ -96,14 +96,14 @@ WHERE pc.slug = 'sandals';
 INSERT INTO recommendation_categories (product_category_id, slug, title)
 SELECT 
   pc.id,
-  slug,
-  title
+  data.rec_slug,
+  data.rec_title
 FROM (
   VALUES 
     ('flat-feet', 'Best Slippers of 2025 for Flat Feet'),
     ('normal-high-arches', 'Best Slippers of 2025 for Normal to High Arches'),
     ('knee-and-hip-pain', 'Best Slippers of 2025 for Knee & Hip Pain')
-) AS data(slug, title)
+) AS data(rec_slug, rec_title)
 CROSS JOIN product_categories pc
 WHERE pc.slug = 'slippers';
 
@@ -111,12 +111,12 @@ WHERE pc.slug = 'slippers';
 INSERT INTO recommendation_categories (product_category_id, slug, title)
 SELECT 
   pc.id,
-  slug,
-  title
+  data.rec_slug,
+  data.rec_title
 FROM (
   VALUES 
     ('no-hands', 'Best "No Hands" Shoes of 2025')
-) AS data(slug, title)
+) AS data(rec_slug, rec_title)
 CROSS JOIN product_categories pc
 WHERE pc.slug = 'shoes';
 
@@ -124,8 +124,8 @@ WHERE pc.slug = 'shoes';
 INSERT INTO recommendation_categories (product_category_id, slug, title)
 SELECT 
   pc.id,
-  slug,
-  title
+  data.rec_slug,
+  data.rec_title
 FROM (
   VALUES 
     ('best-inserts', 'Best Inserts and Pads of 2025'),
@@ -133,6 +133,6 @@ FROM (
     ('athletic-wear', 'Top Athletic Wear Collections of 2025'),
     ('fashion-essentials', 'Must-Have Fashion Essentials of 2025'),
     ('sustainable-products', 'Best Sustainable Products of 2025')
-) AS data(slug, title)
+) AS data(rec_slug, rec_title)
 CROSS JOIN product_categories pc
 WHERE pc.slug = 'not-just-shoes'; 
