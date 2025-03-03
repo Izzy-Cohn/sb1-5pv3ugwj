@@ -5,139 +5,140 @@ import { Features } from '../components/ProductProfile/Features';
 import { ProsAndCons } from '../components/ProductProfile/ProsAndCons';
 import { VideoReview } from '../components/ProductProfile/VideoReview';
 import { Shield, Layers, Footprints } from 'lucide-react';
-import { productCategoriesData } from '../components/Recommendations/RecommendationsList/recommendationsData';
 import { useState, useEffect } from 'react';
+import { supabase } from '../utils/supabase';
 
 interface ProductDetail {
-  id: string;
+  id: number;
   name: string;
   brand: string;
   description: string;
-  longDescription: string;
-  price: string;
-  images: string[];
+  long_description: string | null;
+  image_url: string;
+  price: string | number;
+  amazon_url: string | null;
   features: {
     title: string;
     description: string;
-    icon: React.ElementType;
-  }[];
-  pros: string[];
-  cons: string[];
-  videoId: string;
-  amazonUrl?: string;
+    icon: string;
+  }[] | null;
+  pros: string[] | null;
+  cons: string[] | null;
+  video_id: string | null;
 }
 
-// This would eventually be moved to a database or API
-const productDetails: Record<string, ProductDetail> = {
-  'powerstep-pulse-maxx-running-insoles': {
-    id: 'powerstep-pulse-maxx',
-    name: 'PowerStep Pulse Maxx Running Insoles',
-    brand: 'PowerStep',
-    description: 'Overpronation Corrective Orthotic Inserts for Running Shoes',
-    longDescription: `The PowerStep Pulse Maxx Running Insoles represent the latest in orthotic technology, 
-    specifically designed for runners who need maximum support and stability. These insoles feature a unique 
-    combination of firm but flexible support shell, dual-layer cushioning, and a deep heel cradle for enhanced 
-    stability. The angled exterior heel platform helps control excess motion while running, making them perfect 
-    for overpronation and various foot conditions. The insoles are topped with an antimicrobial fabric that 
-    helps reduce heat and friction while maintaining a fresh environment for your feet.`,
-    price: '$47.95',
-    images: [
-      'https://m.media-amazon.com/images/I/81qfPtgpVYL._AC_SL1500_.jpg',
-      'https://m.media-amazon.com/images/I/81Ry9MtQIBL._AC_SL1500_.jpg',
-      'https://m.media-amazon.com/images/I/81H4DjkegrL._AC_SL1500_.jpg',
-      'https://m.media-amazon.com/images/I/81vNBVW1SDL._AC_SL1500_.jpg'
-    ],
-    features: [
-      {
-        title: 'Maximum Support Shell',
-        description: 'Medical-grade foot support with firm but flexible shell for motion control and stability.',
-        icon: Shield
-      },
-      {
-        title: 'Dual-Layer Cushioning',
-        description: 'VCT® Variable Cushioning Technology combines targeted and controlled cushioning for superior comfort.',
-        icon: Layers
-      },
-      {
-        title: 'Deep Heel Cradle',
-        description: 'Enhanced stability and support with angled exterior heel platform for motion control.',
-        icon: Footprints
-      }
-    ],
-    pros: [
-      'Maximum arch support and stability',
-      'Excellent motion control for overpronation',
-      'Antimicrobial top fabric',
-      'Deep heel cradle for enhanced stability',
-      'Dual-layer cushioning system',
-      'Can be trimmed to fit',
-      'Made in the USA'
-    ],
-    cons: [
-      'May feel firm initially and require break-in period',
-      'Might be too rigid for neutral runners',
-      'Higher price point compared to basic insoles',
-      'May not fit all shoe types'
-    ],
-    videoId: 'dQw4w9WgXcQ', // Placeholder
-    amazonUrl: 'https://www.amazon.com/dp/B09K4N4CWD?social_share=cm_sw_r_cso_em_apin_dp_79ZQZZ7BZYKZ5B43HFAM&starsLeft=1&th=1&linkCode=sl1&tag=newsonshoes-20&linkId=c8f5f8897bcba893e65d843f7b32b08e&language=en_US&ref_=as_li_ss_tl'
-  }
+// Map icon names to components
+const iconMap: Record<string, React.ElementType> = {
+  Shield,
+  Layers,
+  Footprints
 };
 
 export function ProductPage() {
   const { category, slug, productId } = useParams();
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [product, setProduct] = useState<ProductDetail | null>(null);
-  const [basicProductInfo, setBasicProductInfo] = useState<any>(null);
 
   useEffect(() => {
-    // First check if we have detailed product info
-    if (productId && productDetails[productId]) {
-      setProduct(productDetails[productId]);
-      return;
-    }
-
-    // If not, try to find basic product info from the data structure
-    if (category && slug && productId) {
-      const categoryData = productCategoriesData[category];
-      if (categoryData && categoryData.recommendations[slug]) {
-        const items = categoryData.recommendations[slug].items;
-        const formattedProductId = productId.replace(/-/g, ' ');
-        
-        // Find the product with a case-insensitive match on the name
-        const foundProduct = items.find(item => 
-          item.name.toLowerCase() === formattedProductId
-        );
-        
-        if (foundProduct) {
-          setBasicProductInfo(foundProduct);
+    async function fetchData() {
+      setLoading(true);
+      setError(null);
+      
+      try {
+        if (!category || !slug || !productId) {
+          throw new Error('Missing parameters');
         }
+        
+        // First get the product category ID
+        const { data: productCategoryData, error: productCategoryError } = await supabase
+          .from('product_categories')
+          .select('id')
+          .eq('slug', category)
+          .single();
+          
+        if (productCategoryError) {
+          throw new Error(`Error fetching product category: ${productCategoryError.message}`);
+        }
+        
+        // Then get the recommendation category ID
+        const { data: recommendationCategoryData, error: recommendationCategoryError } = await supabase
+          .from('recommendation_categories')
+          .select('id')
+          .eq('product_category_id', productCategoryData.id)
+          .eq('slug', slug)
+          .single();
+          
+        if (recommendationCategoryError) {
+          throw new Error(`Error fetching recommendation category: ${recommendationCategoryError.message}`);
+        }
+        
+        // Convert productId (slug) into a searchable format
+        const formattedProductName = productId.replace(/-/g, ' ');
+        
+        // Get the product by name and recommendation category
+        const { data: productData, error: productError } = await supabase
+          .from('products')
+          .select('*')
+          .eq('recommendation_category_id', recommendationCategoryData.id)
+          .ilike('name', formattedProductName)
+          .single();
+          
+        if (productError) {
+          throw new Error(`Error fetching product: ${productError.message}`);
+        }
+        
+        if (!productData) {
+          throw new Error(`Product "${productId}" not found`);
+        }
+        
+        setProduct(productData);
+      } catch (err) {
+        console.error(err);
+        setError(err instanceof Error ? err.message : 'An unknown error occurred');
+      } finally {
+        setLoading(false);
       }
     }
+    
+    fetchData();
   }, [category, slug, productId]);
 
-  // Use the data from productDetails if available, otherwise fallback to basic info
-  const displayProduct = product || (basicProductInfo ? {
-    id: productId,
-    name: basicProductInfo.name,
-    brand: basicProductInfo.brand,
-    description: basicProductInfo.description,
-    longDescription: basicProductInfo.description,
-    price: basicProductInfo.price,
-    images: [basicProductInfo.imageUrl],
-    features: [],
-    pros: [],
-    cons: [],
-    videoId: '',
-    amazonUrl: basicProductInfo.amazonUrl
-  } : null);
-
-  if (!displayProduct) {
+  if (loading) {
     return (
       <div className="h-screen flex items-center justify-center">
-        <h1 className="text-2xl text-gray-600">Product not found</h1>
+        <div className="text-2xl text-gray-600">Loading...</div>
       </div>
     );
   }
+
+  if (error || !product) {
+    return (
+      <div className="h-screen flex items-center justify-center">
+        <div className="text-2xl text-gray-600">
+          {error || 'Product not found'}
+        </div>
+      </div>
+    );
+  }
+
+  // Prepare the display data
+  const displayProduct = {
+    name: product.name,
+    brand: product.brand,
+    description: product.description,
+    longDescription: product.long_description || product.description,
+    price: typeof product.price === 'number' ? `$${product.price}` : product.price,
+    images: [product.image_url], // In the future, we can support multiple images
+    features: product.features?.map(feature => ({
+      ...feature,
+      icon: iconMap[feature.icon] || Shield
+    })) || [],
+    pros: product.pros || [],
+    cons: product.cons || [],
+    videoId: product.video_id || '',
+    amazonUrl: product.amazon_url
+  };
 
   return (
     <div className="pt-16">
