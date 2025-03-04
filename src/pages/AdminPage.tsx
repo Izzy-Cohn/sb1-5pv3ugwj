@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { supabase } from '../utils/supabase';
+import { PlusCircle, X, ChevronDown, ChevronUp } from 'lucide-react';
 
 interface ProductCategory {
   id: number;
@@ -15,22 +16,43 @@ interface RecommendationCategory {
   title: string;
 }
 
+interface FeatureItem {
+  title: string;
+  description: string;
+  icon: string;
+}
+
 export function AdminPage() {
   const [name, setName] = useState('');
   const [imageUrl, setImageUrl] = useState('');
   const [productCategoryId, setProductCategoryId] = useState('');
   const [recommendationCategoryId, setRecommendationCategoryId] = useState('');
   const [description, setDescription] = useState('');
+  const [longDescription, setLongDescription] = useState('');
   const [brand, setBrand] = useState('');
   const [price, setPrice] = useState('');
   const [amazonUrl, setAmazonUrl] = useState('');
+  const [videoId, setVideoId] = useState('');
+  const [features, setFeatures] = useState<FeatureItem[]>([]);
+  const [pros, setPros] = useState<string[]>([]);
+  const [cons, setCons] = useState<string[]>([]);
   const [status, setStatus] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
   const [loading, setLoading] = useState(false);
+  const [advancedMode, setAdvancedMode] = useState(false);
   
   // States for the dropdown data
   const [productCategories, setProductCategories] = useState<ProductCategory[]>([]);
   const [recommendationCategories, setRecommendationCategories] = useState<RecommendationCategory[]>([]);
   const [loadingCategories, setLoadingCategories] = useState(true);
+
+  // Feature form state
+  const [newFeatureTitle, setNewFeatureTitle] = useState('');
+  const [newFeatureDescription, setNewFeatureDescription] = useState('');
+  const [newFeatureIcon, setNewFeatureIcon] = useState('Shield');
+  
+  // Pro/Con form state
+  const [newPro, setNewPro] = useState('');
+  const [newCon, setNewCon] = useState('');
 
   // Fetch product categories on component mount
   useEffect(() => {
@@ -106,6 +128,44 @@ export function AdminPage() {
     }
   }, [name, brand]);
 
+  const handleAddFeature = () => {
+    if (!newFeatureTitle || !newFeatureDescription) return;
+    
+    setFeatures([...features, {
+      title: newFeatureTitle,
+      description: newFeatureDescription,
+      icon: newFeatureIcon
+    }]);
+    
+    setNewFeatureTitle('');
+    setNewFeatureDescription('');
+    setNewFeatureIcon('Shield');
+  };
+
+  const handleRemoveFeature = (index: number) => {
+    setFeatures(features.filter((_, i) => i !== index));
+  };
+
+  const handleAddPro = () => {
+    if (!newPro) return;
+    setPros([...pros, newPro]);
+    setNewPro('');
+  };
+
+  const handleRemovePro = (index: number) => {
+    setPros(pros.filter((_, i) => i !== index));
+  };
+
+  const handleAddCon = () => {
+    if (!newCon) return;
+    setCons([...cons, newCon]);
+    setNewCon('');
+  };
+
+  const handleRemoveCon = (index: number) => {
+    setCons(cons.filter((_, i) => i !== index));
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -121,6 +181,7 @@ export function AdminPage() {
           message: 'Please fill in all required fields',
           type: 'error'
         });
+        setLoading(false);
         return;
       }
 
@@ -132,21 +193,34 @@ export function AdminPage() {
           message: 'Please enter a valid price',
           type: 'error'
         });
+        setLoading(false);
         return;
+      }
+      
+      // Prepare the product data
+      const productData: any = {
+        recommendation_category_id: parseInt(recommendationCategoryId),
+        name,
+        brand,
+        description,
+        image_url: imageUrl,
+        price: numericPrice,
+        amazon_url: amazonUrl
+      };
+      
+      // Add advanced fields if they exist
+      if (advancedMode) {
+        if (longDescription) productData.long_description = longDescription;
+        if (videoId) productData.video_id = videoId;
+        if (features.length > 0) productData.features = features;
+        if (pros.length > 0) productData.pros = pros;
+        if (cons.length > 0) productData.cons = cons;
       }
       
       // Add the product to the database
       const { data, error } = await supabase
         .from('products')
-        .insert({
-          recommendation_category_id: parseInt(recommendationCategoryId),
-          name,
-          brand,
-          description,
-          image_url: imageUrl,
-          price: numericPrice,
-          amazon_url: amazonUrl
-        })
+        .insert(productData)
         .select()
         .single();
         
@@ -156,9 +230,14 @@ export function AdminPage() {
       setName('');
       setImageUrl('');
       setDescription('');
+      setLongDescription('');
       setBrand('');
       setPrice('');
       setAmazonUrl('');
+      setVideoId('');
+      setFeatures([]);
+      setPros([]);
+      setCons([]);
       
       setStatus({
         message: `Successfully added "${name}" to the database!`,
@@ -182,7 +261,7 @@ export function AdminPage() {
   };
 
   return (
-    <div className="pt-24">
+    <div className="pt-24 pb-24">
       <div className="max-w-3xl mx-auto px-4 py-12">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -344,6 +423,220 @@ export function AdminPage() {
                 placeholder="https://www.amazon.com/dp/..."
               />
             </div>
+
+            <div className="mt-8 mb-6">
+              <button
+                type="button"
+                onClick={() => setAdvancedMode(!advancedMode)}
+                className="flex items-center text-blue-600 hover:text-blue-800 transition-colors"
+              >
+                {advancedMode ? (
+                  <>
+                    <ChevronUp className="w-4 h-4 mr-1" />
+                    Hide Advanced Options
+                  </>
+                ) : (
+                  <>
+                    <ChevronDown className="w-4 h-4 mr-1" />
+                    Show Advanced Options
+                  </>
+                )}
+              </button>
+            </div>
+
+            {advancedMode && (
+              <div className="border-t border-gray-200 pt-6 mb-6 space-y-6">
+                <div>
+                  <label htmlFor="longDescription" className="block text-sm font-medium text-gray-700 mb-1">
+                    Long Description
+                  </label>
+                  <textarea
+                    id="longDescription"
+                    value={longDescription}
+                    onChange={(e) => setLongDescription(e.target.value)}
+                    rows={5}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Detailed product description that will be displayed on the product page..."
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="videoId" className="block text-sm font-medium text-gray-700 mb-1">
+                    YouTube Video ID
+                  </label>
+                  <input
+                    type="text"
+                    id="videoId"
+                    value={videoId}
+                    onChange={(e) => setVideoId(e.target.value)}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="dQw4w9WgXcQ"
+                  />
+                  <p className="text-xs text-gray-500 mt-1">
+                    Enter the YouTube video ID (e.g., for https://youtube.com/watch?v=dQw4w9WgXcQ, enter "dQw4w9WgXcQ")
+                  </p>
+                </div>
+
+                <div>
+                  <div className="flex justify-between items-center mb-1">
+                    <label className="block text-sm font-medium text-gray-700">
+                      Key Features
+                    </label>
+                    <span className="text-xs text-gray-500">
+                      {features.length} feature{features.length !== 1 ? 's' : ''} added
+                    </span>
+                  </div>
+                  
+                  <div className="mb-4 space-y-4">
+                    {features.map((feature, index) => (
+                      <div key={index} className="flex items-start bg-gray-50 p-3 rounded-md">
+                        <div className="flex-1">
+                          <div className="font-medium">{feature.title}</div>
+                          <div className="text-sm text-gray-600">{feature.description}</div>
+                          <div className="text-xs text-gray-500 mt-1">Icon: {feature.icon}</div>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => handleRemoveFeature(index)}
+                          className="text-red-500 hover:text-red-700"
+                        >
+                          <X className="w-4 h-4" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                  
+                  <div className="border border-gray-200 rounded-md p-4">
+                    <h4 className="text-sm font-medium mb-2">Add New Feature</h4>
+                    <div className="grid grid-cols-1 gap-3">
+                      <input
+                        type="text"
+                        value={newFeatureTitle}
+                        onChange={(e) => setNewFeatureTitle(e.target.value)}
+                        className="px-3 py-2 border border-gray-300 rounded-md"
+                        placeholder="Feature Title"
+                      />
+                      <textarea
+                        value={newFeatureDescription}
+                        onChange={(e) => setNewFeatureDescription(e.target.value)}
+                        className="px-3 py-2 border border-gray-300 rounded-md"
+                        placeholder="Feature Description"
+                        rows={2}
+                      />
+                      <div>
+                        <label className="block text-xs text-gray-500 mb-1">Icon</label>
+                        <select
+                          value={newFeatureIcon}
+                          onChange={(e) => setNewFeatureIcon(e.target.value)}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                        >
+                          <option value="Shield">Shield</option>
+                          <option value="Layers">Layers</option>
+                          <option value="Footprints">Footprints</option>
+                          <option value="Star">Star</option>
+                          <option value="Heart">Heart</option>
+                        </select>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={handleAddFeature}
+                        className="flex justify-center items-center px-4 py-2 bg-blue-50 text-blue-600 rounded-md hover:bg-blue-100"
+                      >
+                        <PlusCircle className="w-4 h-4 mr-1" /> Add Feature
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <div className="flex justify-between items-center mb-1">
+                      <label className="block text-sm font-medium text-gray-700">
+                        Pros
+                      </label>
+                      <span className="text-xs text-gray-500">
+                        {pros.length} item{pros.length !== 1 ? 's' : ''} added
+                      </span>
+                    </div>
+                    
+                    <div className="mb-3 space-y-2">
+                      {pros.map((pro, index) => (
+                        <div key={index} className="flex items-center bg-gray-50 p-2 rounded-md">
+                          <div className="flex-1 text-sm">{pro}</div>
+                          <button
+                            type="button"
+                            onClick={() => handleRemovePro(index)}
+                            className="text-red-500 hover:text-red-700"
+                          >
+                            <X className="w-4 h-4" />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                    
+                    <div className="flex">
+                      <input
+                        type="text"
+                        value={newPro}
+                        onChange={(e) => setNewPro(e.target.value)}
+                        className="flex-1 px-3 py-2 border border-gray-300 rounded-l-md"
+                        placeholder="Add a pro"
+                      />
+                      <button
+                        type="button"
+                        onClick={handleAddPro}
+                        className="px-3 py-2 bg-blue-50 text-blue-600 rounded-r-md hover:bg-blue-100"
+                      >
+                        <PlusCircle className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <div className="flex justify-between items-center mb-1">
+                      <label className="block text-sm font-medium text-gray-700">
+                        Cons
+                      </label>
+                      <span className="text-xs text-gray-500">
+                        {cons.length} item{cons.length !== 1 ? 's' : ''} added
+                      </span>
+                    </div>
+                    
+                    <div className="mb-3 space-y-2">
+                      {cons.map((con, index) => (
+                        <div key={index} className="flex items-center bg-gray-50 p-2 rounded-md">
+                          <div className="flex-1 text-sm">{con}</div>
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveCon(index)}
+                            className="text-red-500 hover:text-red-700"
+                          >
+                            <X className="w-4 h-4" />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                    
+                    <div className="flex">
+                      <input
+                        type="text"
+                        value={newCon}
+                        onChange={(e) => setNewCon(e.target.value)}
+                        className="flex-1 px-3 py-2 border border-gray-300 rounded-l-md"
+                        placeholder="Add a con"
+                      />
+                      <button
+                        type="button"
+                        onClick={handleAddCon}
+                        className="px-3 py-2 bg-blue-50 text-blue-600 rounded-r-md hover:bg-blue-100"
+                      >
+                        <PlusCircle className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
             
             <button
               type="submit"
@@ -369,6 +662,7 @@ export function AdminPage() {
               <li>Select the main product category (e.g., "Shoes", "Not Just Shoes")</li>
               <li>Select the specific recommendation category (e.g., "Best Inserts and Pads of 2025")</li>
               <li>Paste the Amazon affiliate link for the product</li>
+              <li>For detailed product pages, click "Show Advanced Options" to add more content</li>
               <li>Click "Add Product" to add it to the database</li>
             </ol>
             <p className="mt-4 text-sm text-gray-600">
