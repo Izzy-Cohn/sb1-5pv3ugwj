@@ -1,0 +1,52 @@
+{
+    "name": "PowerStep Pulse Maxx Running Insoles",
+    "brand": "PowerStep",
+    "description": "Maximum cushioning and support insoles designed specifically for running, offering relief from plantar fasciitis and other foot pain while providing stability and shock absorption.",
+    "longDescription": "PowerStep Pulse Maxx Running Insoles combine maximum cushioning with targeted support to enhance your running experience while alleviating foot pain. These specialized insoles feature a deep heel cradle for stability, a firm but flexible arch support, and a cushioned forefoot with anti-shock technology.\n\nDesigned specifically for running and high-impact activities, the PowerStep Pulse Maxx insoles provide superior biomechanical support to prevent overpronation while the dual-layer cushioning absorbs impact with every stride. The antimicrobial top fabric reduces friction and heat, helping to prevent blisters and maintain a fresh environment.\n\nThese premium insoles are ideal for runners experiencing plantar fasciitis, heel pain, arch discomfort, or general foot fatigue. The orthotic design supports the foot's natural alignment, potentially improving overall performance while reducing pain from heel to toe. PowerStep insoles are trusted by podiatrists and athletes alike for their clinical design and durable construction.",
+    "price": "41.95",
+    "amazonUrl": "https://www.amazon.com/Powerstep-Running-Maximum-Support-Fasciitis/dp/B09K4L2LRC/",
+    "videoId": "",
+    "features": [
+      {
+        "title": "Maximum Cushioning",
+        "description": "Dual-layer cushioning system with VCT (Variable Cushioning Technology) provides superior shock absorption for high-impact activities",
+        "icon": "cloud"
+      },
+      {
+        "title": "Enhanced Arch Support",
+        "description": "Firm, flexible support shell with reinforced arch design for improved stability and motion control during running",
+        "icon": "support"
+      },
+      {
+        "title": "Anti-Fatigue Technology",
+        "description": "Specialized forefoot cushioning reduces fatigue during long runs and helps prevent ball-of-foot pain",
+        "icon": "bolt"
+      },
+      {
+        "title": "Deep Heel Cradle",
+        "description": "Extra-deep heel cup provides maximum stability and helps align the foot to reduce stress on joints",
+        "icon": "foot"
+      },
+      {
+        "title": "Antimicrobial Fabric",
+        "description": "Heat and friction-reducing top fabric with antimicrobial treatment to prevent odor and blisters",
+        "icon": "shield"
+      }
+    ],
+    "pros": [
+      "Specifically designed for running and high-impact activities",
+      "Maximum cushioning reduces impact stress on feet, knees, and back",
+      "Effective relief for plantar fasciitis and heel pain",
+      "Helps correct overpronation to improve running form",
+      "Durable construction stands up to frequent use",
+      "Can be transferred between different running shoes",
+      "No trimming required - ready to use out of the box"
+    ],
+    "cons": [
+      "Thicker profile may feel snug in shoes that already have limited space",
+      "Higher price point compared to basic insoles",
+      "May require a brief break-in period for some users",
+      "Firmer support might feel too rigid for runners who prefer softer cushioning",
+      "Not ideal for minimalist or zero-drop running shoes"
+    ]
+  }

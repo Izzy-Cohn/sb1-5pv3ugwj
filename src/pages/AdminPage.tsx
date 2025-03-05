@@ -59,6 +59,10 @@ export function AdminPage() {
   const [jsonFileName, setJsonFileName] = useState<string>('');
   const [directUpload, setDirectUpload] = useState<boolean>(false);
 
+  // Add new state for product deletion
+  const [searchProductName, setSearchProductName] = useState('');
+  const [searchResults, setSearchResults] = useState<any[]>([]);
+
   // Fetch product categories on component mount
   useEffect(() => {
     async function fetchProductCategories() {
@@ -407,6 +411,58 @@ export function AdminPage() {
       });
     } finally {
       setLoading(false);
+    }
+  };
+
+  // Add new function to handle product deletion
+  const handleDeleteProduct = async (productId: number) => {
+    const confirmDelete = window.confirm('Are you sure you want to delete this product?');
+    if (!confirmDelete) return;
+    
+    try {
+      const { error } = await supabase
+        .from('products')
+        .delete()
+        .eq('id', productId);
+      
+      if (error) throw error;
+      
+      // Remove from results
+      setSearchResults(searchResults.filter(p => p.id !== productId));
+      
+      setStatus({
+        message: 'Product deleted successfully',
+        type: 'success'
+      });
+    } catch (err) {
+      console.error('Error deleting product:', err);
+      setStatus({
+        message: err instanceof Error ? err.message : 'An error occurred while deleting',
+        type: 'error'
+      });
+    }
+  };
+
+  // Add new function to handle product search
+  const handleSearchProducts = async () => {
+    if (!searchProductName.trim()) return;
+    
+    try {
+      const { data, error } = await supabase
+        .from('products')
+        .select('id, name, brand')
+        .ilike('name', `%${searchProductName}%`)
+        .or(`brand.ilike.%${searchProductName}%`);
+      
+      if (error) throw error;
+      
+      setSearchResults(data || []);
+    } catch (err) {
+      console.error('Error searching products:', err);
+      setStatus({
+        message: err instanceof Error ? err.message : 'An error occurred during search',
+        type: 'error'
+      });
     }
   };
 
@@ -962,6 +1018,77 @@ export function AdminPage() {
             <p className="mt-4 text-sm text-gray-600">
               Note: Fields marked with * are required.
             </p>
+          </div>
+
+          {/* Product Management Section */}
+          <div className="bg-white p-8 rounded-lg shadow-sm mb-6">
+            <h2 className="text-xl font-semibold mb-4">Product Management</h2>
+            
+            <div className="mb-4">
+              <label htmlFor="deleteProductName" className="block text-sm font-medium text-gray-700 mb-1">
+                Delete Products by Name
+              </label>
+              <div className="flex items-center">
+                <input
+                  type="text"
+                  id="deleteProductName"
+                  value={searchProductName}
+                  onChange={(e) => setSearchProductName(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Enter product name to search"
+                />
+                <button
+                  type="button"
+                  onClick={handleSearchProducts}
+                  className="ml-2 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                >
+                  Search
+                </button>
+              </div>
+            </div>
+            
+            {searchResults.length > 0 && (
+              <div className="mt-4">
+                <h3 className="text-md font-medium mb-2">Search Results</h3>
+                <div className="border rounded-md overflow-hidden">
+                  <table className="min-w-full divide-y divide-gray-200">
+                    <thead className="bg-gray-50">
+                      <tr>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Name
+                        </th>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Brand
+                        </th>
+                        <th scope="col" className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Actions
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-gray-200">
+                      {searchResults.map((product) => (
+                        <tr key={product.id}>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                            {product.name}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            {product.brand}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                            <button
+                              onClick={() => handleDeleteProduct(product.id)}
+                              className="text-red-600 hover:text-red-900"
+                            >
+                              Delete
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
           </div>
         </motion.div>
       </div>
