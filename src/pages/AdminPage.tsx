@@ -288,7 +288,9 @@ export function AdminPage() {
         if (parsedData.brand) setBrand(parsedData.brand);
         if (parsedData.description) setDescription(parsedData.description);
         if (parsedData.longDescription) setLongDescription(parsedData.longDescription);
-        if (parsedData.price) setPrice(parsedData.price.toString());
+        
+        // Don't set the price from JSON as it will be manually entered
+        // if (parsedData.price) setPrice(parsedData.price.toString());
         
         // Keep imageUrl from manually entered value instead of the JSON
         // if (parsedData.imageUrl) setImageUrl(parsedData.imageUrl);
@@ -330,7 +332,7 @@ export function AdminPage() {
         }
         
         setStatus({
-          message: 'JSON data loaded successfully! Please set image URL and categories before submitting.',
+          message: 'JSON data loaded successfully! Please set image URL, price, and categories before submitting.',
           type: 'success'
         });
         
@@ -354,8 +356,8 @@ export function AdminPage() {
     
     try {
       // Basic validation
-      if (!data.name || !imageUrl || !productCategoryId || !recommendationCategoryId) {
-        throw new Error('Missing required fields: product name, image URL, or categories');
+      if (!data.name || !imageUrl || !price || !productCategoryId || !recommendationCategoryId) {
+        throw new Error('Missing required fields: product name, image URL, price, or categories');
       }
       
       // Format data for database
@@ -365,7 +367,7 @@ export function AdminPage() {
         brand: data.brand || '',
         description: data.description || '',
         image_url: imageUrl, // Use manually provided image URL
-        price: typeof data.price === 'string' ? parseFloat(data.price.replace(/[^0-9.]/g, '')) : data.price || 0,
+        price: parseFloat(price.replace(/[^0-9.]/g, '')), // Use manually entered price
         amazon_url: data.amazonUrl || ''
       };
       
@@ -542,6 +544,26 @@ export function AdminPage() {
                 )}
               </div>
               
+              {/* Added Price Manual Override */}
+              <div className="mb-4">
+                <label htmlFor="jsonPrice" className="block text-sm font-medium text-gray-700 mb-1">
+                  Price <span className="text-red-500">*</span>
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <span className="text-gray-500 sm:text-sm">$</span>
+                  </div>
+                  <input
+                    type="text"
+                    id="jsonPrice"
+                    value={price}
+                    onChange={(e) => setPrice(e.target.value)}
+                    className="w-full pl-7 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="0.00"
+                  />
+                </div>
+              </div>
+              
               <div className="mb-4">
                 <label htmlFor="jsonProductCategory" className="block text-sm font-medium text-gray-700 mb-1">
                   Product Category <span className="text-red-500">*</span>
@@ -606,7 +628,7 @@ export function AdminPage() {
             
             <p className="text-xs text-gray-500">
               Upload a JSON file to automatically populate most fields. You must manually select the image URL,
-              product category, and recommendation category before submission. If direct upload is enabled, 
+              price, product category, and recommendation category before submission. If direct upload is enabled, 
               data will be submitted to the database immediately.
             </p>
             
@@ -615,9 +637,9 @@ export function AdminPage() {
               <button
                 type="button"
                 onClick={() => handleDirectJSONSubmit(jsonData)}
-                disabled={!imageUrl || !productCategoryId || !recommendationCategoryId || loading}
+                disabled={!imageUrl || !price || !productCategoryId || !recommendationCategoryId || loading}
                 className={`w-full mt-4 py-3 rounded-lg font-semibold transition-colors ${
-                  !imageUrl || !productCategoryId || !recommendationCategoryId || loading
+                  !imageUrl || !price || !productCategoryId || !recommendationCategoryId || loading
                     ? 'bg-gray-400 text-white cursor-not-allowed' 
                     : 'bg-primary text-white hover:bg-opacity-90'
                 }`}
