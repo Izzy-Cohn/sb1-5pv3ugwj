@@ -285,7 +285,10 @@ export function AdminPage() {
         if (parsedData.description) setDescription(parsedData.description);
         if (parsedData.longDescription) setLongDescription(parsedData.longDescription);
         if (parsedData.price) setPrice(parsedData.price.toString());
-        if (parsedData.imageUrl) setImageUrl(parsedData.imageUrl);
+        
+        // Keep imageUrl from manually entered value instead of the JSON
+        // if (parsedData.imageUrl) setImageUrl(parsedData.imageUrl);
+        
         if (parsedData.amazonUrl) setAmazonUrl(parsedData.amazonUrl);
         if (parsedData.videoId) setVideoId(parsedData.videoId);
         
@@ -300,18 +303,18 @@ export function AdminPage() {
           setCons(parsedData.cons);
         }
         
-        // If we have recommendation_category_id, we need to find the related product_category_id
-        if (parsedData.recommendation_category_id) {
-          const recCatId = parsedData.recommendation_category_id.toString();
-          setRecommendationCategoryId(recCatId);
-          
-          // Find the matching recommendation category
-          const recCat = recommendationCategories.find(cat => cat.id.toString() === recCatId);
-          if (recCat) {
-            // Set the product category ID
-            setProductCategoryId(recCat.product_category_id.toString());
-          }
-        }
+        // Do NOT overwrite the categories - these will be manually selected
+        // if (parsedData.recommendation_category_id) {
+        //   const recCatId = parsedData.recommendation_category_id.toString();
+        //   setRecommendationCategoryId(recCatId);
+        //   
+        //   // Find the matching recommendation category
+        //   const recCat = recommendationCategories.find(cat => cat.id.toString() === recCatId);
+        //   if (recCat) {
+        //     // Set the product category ID
+        //     setProductCategoryId(recCat.product_category_id.toString());
+        //   }
+        // }
         
         // Show advanced options if advanced fields exist
         if (parsedData.longDescription || 
@@ -323,14 +326,11 @@ export function AdminPage() {
         }
         
         setStatus({
-          message: 'JSON data loaded successfully! Review and submit the form.',
+          message: 'JSON data loaded successfully! Please set image URL and categories before submitting.',
           type: 'success'
         });
         
-        // If direct upload is enabled, submit the form automatically
-        if (directUpload) {
-          handleDirectJSONSubmit(parsedData);
-        }
+        // Direct upload is now handled by separate button click after manual overrides
       } catch (error) {
         console.error('Error parsing JSON:', error);
         setStatus({
@@ -350,17 +350,17 @@ export function AdminPage() {
     
     try {
       // Basic validation
-      if (!data.name || !data.recommendation_category_id) {
-        throw new Error('JSON data missing required fields (name, recommendation_category_id)');
+      if (!data.name || !imageUrl || !productCategoryId || !recommendationCategoryId) {
+        throw new Error('Missing required fields: product name, image URL, or categories');
       }
       
       // Format data for database
       const productData: any = {
-        recommendation_category_id: parseInt(data.recommendation_category_id),
+        recommendation_category_id: parseInt(recommendationCategoryId),
         name: data.name,
         brand: data.brand || '',
         description: data.description || '',
-        image_url: data.imageUrl || '',
+        image_url: imageUrl, // Use manually provided image URL
         price: typeof data.price === 'string' ? parseFloat(data.price.replace(/[^0-9.]/g, '')) : data.price || 0,
         amazon_url: data.amazonUrl || ''
       };
@@ -380,7 +380,7 @@ export function AdminPage() {
       if (error) throw error;
       
       setStatus({
-        message: `Successfully added "${data.name}" to the database directly from JSON!`,
+        message: `Successfully added "${data.name}" to the database!`,
         type: 'success'
       });
       
@@ -427,7 +427,7 @@ export function AdminPage() {
             </div>
           )}
           
-          {/* Add JSON Upload Section */}
+          {/* Enhanced JSON Upload Section */}
           <div className="bg-white p-8 rounded-lg shadow-sm mb-6">
             <h2 className="text-xl font-semibold mb-4">Upload Product Data</h2>
             
@@ -455,6 +455,86 @@ export function AdminPage() {
               )}
             </div>
             
+            {/* Manual override fields */}
+            <div className="border-t border-gray-200 pt-4 mb-4">
+              <h3 className="text-sm font-medium text-gray-700 mb-3">Manual Overrides</h3>
+              
+              <div className="mb-4">
+                <label htmlFor="jsonImageUrl" className="block text-sm font-medium text-gray-700 mb-1">
+                  Product Image URL <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="url"
+                  id="jsonImageUrl"
+                  value={imageUrl}
+                  onChange={(e) => setImageUrl(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="https://m.media-amazon.com/images/I/..."
+                />
+                {imageUrl && (
+                  <div className="mt-2">
+                    <p className="text-sm text-gray-500 mb-1">Preview:</p>
+                    <img 
+                      src={imageUrl} 
+                      alt="Product preview" 
+                      className="w-32 h-32 object-cover border border-gray-300 rounded-md"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = 'https://via.placeholder.com/150?text=Invalid+Image';
+                      }}
+                    />
+                  </div>
+                )}
+              </div>
+              
+              <div className="mb-4">
+                <label htmlFor="jsonProductCategory" className="block text-sm font-medium text-gray-700 mb-1">
+                  Product Category <span className="text-red-500">*</span>
+                </label>
+                <select
+                  id="jsonProductCategory"
+                  value={productCategoryId}
+                  onChange={(e) => setProductCategoryId(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  disabled={loadingCategories}
+                >
+                  <option value="">
+                    {loadingCategories ? 'Loading categories...' : 'Select a product category'}
+                  </option>
+                  {productCategories.map((cat) => (
+                    <option key={cat.id} value={cat.id}>
+                      {cat.title}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="mb-4">
+                <label htmlFor="jsonRecommendationCategory" className="block text-sm font-medium text-gray-700 mb-1">
+                  Recommendation Category <span className="text-red-500">*</span>
+                </label>
+                <select
+                  id="jsonRecommendationCategory"
+                  value={recommendationCategoryId}
+                  onChange={(e) => setRecommendationCategoryId(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  disabled={!productCategoryId || loadingCategories}
+                >
+                  <option value="">
+                    {!productCategoryId
+                      ? 'Please select a product category first'
+                      : loadingCategories
+                      ? 'Loading categories...'
+                      : 'Select a recommendation category'}
+                  </option>
+                  {recommendationCategories.map((cat) => (
+                    <option key={cat.id} value={cat.id}>
+                      {cat.title}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+            
             <div className="flex items-center mb-2">
               <input
                 type="checkbox"
@@ -469,9 +549,26 @@ export function AdminPage() {
             </div>
             
             <p className="text-xs text-gray-500">
-              Upload a JSON file to automatically populate all fields. If direct upload is enabled, 
+              Upload a JSON file to automatically populate most fields. You must manually select the image URL,
+              product category, and recommendation category before submission. If direct upload is enabled, 
               data will be submitted to the database immediately.
             </p>
+            
+            {/* Add button to submit JSON with overrides directly */}
+            {jsonData && (
+              <button
+                type="button"
+                onClick={() => handleDirectJSONSubmit(jsonData)}
+                disabled={!imageUrl || !productCategoryId || !recommendationCategoryId || loading}
+                className={`w-full mt-4 py-3 rounded-lg font-semibold transition-colors ${
+                  !imageUrl || !productCategoryId || !recommendationCategoryId || loading
+                    ? 'bg-gray-400 text-white cursor-not-allowed' 
+                    : 'bg-primary text-white hover:bg-opacity-90'
+                }`}
+              >
+                {loading ? 'Processing...' : 'Submit with Manual Overrides'}
+              </button>
+            )}
           </div>
           
           <form onSubmit={handleSubmit} className="bg-white p-8 rounded-lg shadow-sm">
