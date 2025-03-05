@@ -54,6 +54,11 @@ export function AdminPage() {
   const [newPro, setNewPro] = useState('');
   const [newCon, setNewCon] = useState('');
 
+  // Add new state for JSON upload
+  const [jsonData, setJsonData] = useState<any>(null);
+  const [jsonFileName, setJsonFileName] = useState<string>('');
+  const [directUpload, setDirectUpload] = useState<boolean>(false);
+
   // Fetch product categories on component mount
   useEffect(() => {
     async function fetchProductCategories() {
@@ -260,6 +265,151 @@ export function AdminPage() {
     }
   };
 
+  // Handle JSON file upload
+  const handleJSONUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    
+    setJsonFileName(file.name);
+    const reader = new FileReader();
+    
+    reader.onload = async (e) => {
+      try {
+        const content = e.target?.result as string;
+        const parsedData = JSON.parse(content);
+        setJsonData(parsedData);
+        
+        // Populate form fields with the JSON data
+        if (parsedData.name) setName(parsedData.name);
+        if (parsedData.brand) setBrand(parsedData.brand);
+        if (parsedData.description) setDescription(parsedData.description);
+        if (parsedData.longDescription) setLongDescription(parsedData.longDescription);
+        if (parsedData.price) setPrice(parsedData.price.toString());
+        if (parsedData.imageUrl) setImageUrl(parsedData.imageUrl);
+        if (parsedData.amazonUrl) setAmazonUrl(parsedData.amazonUrl);
+        if (parsedData.videoId) setVideoId(parsedData.videoId);
+        
+        // Handle arrays
+        if (parsedData.features && Array.isArray(parsedData.features)) {
+          setFeatures(parsedData.features);
+        }
+        if (parsedData.pros && Array.isArray(parsedData.pros)) {
+          setPros(parsedData.pros);
+        }
+        if (parsedData.cons && Array.isArray(parsedData.cons)) {
+          setCons(parsedData.cons);
+        }
+        
+        // If we have recommendation_category_id, we need to find the related product_category_id
+        if (parsedData.recommendation_category_id) {
+          const recCatId = parsedData.recommendation_category_id.toString();
+          setRecommendationCategoryId(recCatId);
+          
+          // Find the matching recommendation category
+          const recCat = recommendationCategories.find(cat => cat.id.toString() === recCatId);
+          if (recCat) {
+            // Set the product category ID
+            setProductCategoryId(recCat.product_category_id.toString());
+          }
+        }
+        
+        // Show advanced options if advanced fields exist
+        if (parsedData.longDescription || 
+            parsedData.videoId || 
+            (parsedData.features && parsedData.features.length > 0) ||
+            (parsedData.pros && parsedData.pros.length > 0) ||
+            (parsedData.cons && parsedData.cons.length > 0)) {
+          setAdvancedMode(true);
+        }
+        
+        setStatus({
+          message: 'JSON data loaded successfully! Review and submit the form.',
+          type: 'success'
+        });
+        
+        // If direct upload is enabled, submit the form automatically
+        if (directUpload) {
+          handleDirectJSONSubmit(parsedData);
+        }
+      } catch (error) {
+        console.error('Error parsing JSON:', error);
+        setStatus({
+          message: 'Error parsing JSON file. Please check the format.',
+          type: 'error'
+        });
+      }
+    };
+    
+    reader.readAsText(file);
+  };
+  
+  // Handle direct JSON submission to database
+  const handleDirectJSONSubmit = async (data: any) => {
+    setLoading(true);
+    setStatus(null);
+    
+    try {
+      // Basic validation
+      if (!data.name || !data.recommendation_category_id) {
+        throw new Error('JSON data missing required fields (name, recommendation_category_id)');
+      }
+      
+      // Format data for database
+      const productData: any = {
+        recommendation_category_id: parseInt(data.recommendation_category_id),
+        name: data.name,
+        brand: data.brand || '',
+        description: data.description || '',
+        image_url: data.imageUrl || '',
+        price: typeof data.price === 'string' ? parseFloat(data.price.replace(/[^0-9.]/g, '')) : data.price || 0,
+        amazon_url: data.amazonUrl || ''
+      };
+      
+      // Add optional fields
+      if (data.longDescription) productData.long_description = data.longDescription;
+      if (data.videoId) productData.video_id = data.videoId;
+      if (data.features && Array.isArray(data.features)) productData.features = data.features;
+      if (data.pros && Array.isArray(data.pros)) productData.pros = data.pros;
+      if (data.cons && Array.isArray(data.cons)) productData.cons = data.cons;
+      
+      // Insert into database
+      const { error } = await supabase
+        .from('products')
+        .insert(productData);
+        
+      if (error) throw error;
+      
+      setStatus({
+        message: `Successfully added "${data.name}" to the database directly from JSON!`,
+        type: 'success'
+      });
+      
+      // Reset form
+      setName('');
+      setImageUrl('');
+      setDescription('');
+      setLongDescription('');
+      setBrand('');
+      setPrice('');
+      setAmazonUrl('');
+      setVideoId('');
+      setFeatures([]);
+      setPros([]);
+      setCons([]);
+      setJsonData(null);
+      setJsonFileName('');
+      
+    } catch (err) {
+      console.error('Error with direct JSON upload:', err);
+      setStatus({
+        message: err instanceof Error ? err.message : 'An unknown error occurred',
+        type: 'error'
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="pt-24 pb-24">
       <div className="max-w-3xl mx-auto px-4 py-12">
@@ -276,6 +426,53 @@ export function AdminPage() {
               {status.message}
             </div>
           )}
+          
+          {/* Add JSON Upload Section */}
+          <div className="bg-white p-8 rounded-lg shadow-sm mb-6">
+            <h2 className="text-xl font-semibold mb-4">Upload Product Data</h2>
+            
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                JSON File Upload
+              </label>
+              <div className="flex items-center">
+                <input
+                  type="file"
+                  accept=".json"
+                  onChange={handleJSONUpload}
+                  className="block w-full text-sm text-gray-500
+                    file:mr-4 file:py-2 file:px-4
+                    file:rounded-md file:border-0
+                    file:text-sm file:font-semibold
+                    file:bg-blue-50 file:text-blue-700
+                    hover:file:bg-blue-100"
+                />
+              </div>
+              {jsonFileName && (
+                <p className="mt-2 text-sm text-green-600">
+                  Loaded: {jsonFileName}
+                </p>
+              )}
+            </div>
+            
+            <div className="flex items-center mb-2">
+              <input
+                type="checkbox"
+                id="directUpload"
+                checked={directUpload}
+                onChange={(e) => setDirectUpload(e.target.checked)}
+                className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+              />
+              <label htmlFor="directUpload" className="ml-2 block text-sm text-gray-700">
+                Direct upload (skip form review)
+              </label>
+            </div>
+            
+            <p className="text-xs text-gray-500">
+              Upload a JSON file to automatically populate all fields. If direct upload is enabled, 
+              data will be submitted to the database immediately.
+            </p>
+          </div>
           
           <form onSubmit={handleSubmit} className="bg-white p-8 rounded-lg shadow-sm">
             <div className="mb-6">
