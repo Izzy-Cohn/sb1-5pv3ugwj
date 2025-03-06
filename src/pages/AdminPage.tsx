@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { supabase } from '../utils/supabase';
-import { PlusCircle, X, ChevronDown, ChevronUp } from 'lucide-react';
+import { PlusCircle, X, ChevronDown, ChevronUp, Star } from 'lucide-react';
+import { iconMap } from '../utils/icons';
+import IconPicker from '../components/IconPicker';
 
 interface ProductCategory {
   id: number;
@@ -48,7 +50,6 @@ export function AdminPage() {
   // Feature form state
   const [newFeatureTitle, setNewFeatureTitle] = useState('');
   const [newFeatureDescription, setNewFeatureDescription] = useState('');
-  const [newFeatureIcon, setNewFeatureIcon] = useState('Shield');
   
   // Pro/Con form state
   const [newPro, setNewPro] = useState('');
@@ -143,12 +144,11 @@ export function AdminPage() {
     setFeatures([...features, {
       title: newFeatureTitle,
       description: newFeatureDescription,
-      icon: newFeatureIcon
+      icon: "star"
     }]);
     
     setNewFeatureTitle('');
     setNewFeatureDescription('');
-    setNewFeatureIcon('Shield');
   };
 
   const handleRemoveFeature = (index: number) => {
@@ -221,7 +221,16 @@ export function AdminPage() {
       if (advancedMode) {
         if (longDescription) productData.long_description = longDescription;
         if (videoId) productData.video_id = videoId;
-        if (features.length > 0) productData.features = features;
+        
+        // Standardize features to use star icon
+        if (features.length > 0) {
+          productData.features = features.map(feature => ({
+            title: feature.title,
+            description: feature.description,
+            icon: "star" // Force all features to use star icon
+          }));
+        }
+        
         if (pros.length > 0) productData.pros = pros;
         if (cons.length > 0) productData.cons = cons;
       }
@@ -298,29 +307,23 @@ export function AdminPage() {
         if (parsedData.amazonUrl) setAmazonUrl(parsedData.amazonUrl);
         if (parsedData.videoId) setVideoId(parsedData.videoId);
         
-        // Handle arrays
+        // Handle arrays - UPDATE FEATURES TO ALWAYS USE "star" ICON
         if (parsedData.features && Array.isArray(parsedData.features)) {
-          setFeatures(parsedData.features);
+          // Ensure all features use the "star" icon
+          const standardizedFeatures = parsedData.features.map(feature => ({
+            title: feature.title,
+            description: feature.description,
+            icon: "star" // Force all features to use star icon
+          }));
+          setFeatures(standardizedFeatures);
         }
+        
         if (parsedData.pros && Array.isArray(parsedData.pros)) {
           setPros(parsedData.pros);
         }
         if (parsedData.cons && Array.isArray(parsedData.cons)) {
           setCons(parsedData.cons);
         }
-        
-        // Do NOT overwrite the categories - these will be manually selected
-        // if (parsedData.recommendation_category_id) {
-        //   const recCatId = parsedData.recommendation_category_id.toString();
-        //   setRecommendationCategoryId(recCatId);
-        //   
-        //   // Find the matching recommendation category
-        //   const recCat = recommendationCategories.find(cat => cat.id.toString() === recCatId);
-        //   if (recCat) {
-        //     // Set the product category ID
-        //     setProductCategoryId(recCat.product_category_id.toString());
-        //   }
-        // }
         
         // Show advanced options if advanced fields exist
         if (parsedData.longDescription || 
@@ -336,7 +339,6 @@ export function AdminPage() {
           type: 'success'
         });
         
-        // Direct upload is now handled by separate button click after manual overrides
       } catch (error) {
         console.error('Error parsing JSON:', error);
         setStatus({
@@ -374,7 +376,16 @@ export function AdminPage() {
       // Add optional fields
       if (data.longDescription) productData.long_description = data.longDescription;
       if (data.videoId) productData.video_id = data.videoId;
-      if (data.features && Array.isArray(data.features)) productData.features = data.features;
+      
+      // Standardize features to use star icon
+      if (data.features && Array.isArray(data.features)) {
+        productData.features = data.features.map((feature: any) => ({
+          title: feature.title,
+          description: feature.description,
+          icon: "star" // Force all features to use star icon
+        }));
+      }
+      
       if (data.pros && Array.isArray(data.pros)) productData.pros = data.pros;
       if (data.cons && Array.isArray(data.cons)) productData.cons = data.cons;
       
@@ -865,7 +876,10 @@ export function AdminPage() {
                         <div className="flex-1">
                           <div className="font-medium">{feature.title}</div>
                           <div className="text-sm text-gray-600">{feature.description}</div>
-                          <div className="text-xs text-gray-500 mt-1">Icon: {feature.icon}</div>
+                          <div className="text-xs text-gray-500 mt-1 flex items-center">
+                            <Star className="w-4 h-4 mr-1 text-gray-600" />
+                            <span>Star</span>
+                          </div>
                         </div>
                         <button
                           type="button"
@@ -895,20 +909,6 @@ export function AdminPage() {
                         placeholder="Feature Description"
                         rows={2}
                       />
-                      <div>
-                        <label className="block text-xs text-gray-500 mb-1">Icon</label>
-                        <select
-                          value={newFeatureIcon}
-                          onChange={(e) => setNewFeatureIcon(e.target.value)}
-                          className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                        >
-                          <option value="Shield">Shield</option>
-                          <option value="Layers">Layers</option>
-                          <option value="Footprints">Footprints</option>
-                          <option value="Star">Star</option>
-                          <option value="Heart">Heart</option>
-                        </select>
-                      </div>
                       <button
                         type="button"
                         onClick={handleAddFeature}
@@ -1112,6 +1112,28 @@ export function AdminPage() {
               </div>
             )}
           </div>
+
+          {/* Feature Preview */}
+          {features.length > 0 && (
+            <div className="mb-6 p-4 border border-gray-200 rounded-md">
+              <h3 className="text-sm font-medium text-gray-700 mb-3">Feature Preview</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {features.map((feature, index) => (
+                  <div key={index} className="flex">
+                    <div className="flex-shrink-0 mr-3">
+                      <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                        <Star className="w-5 h-5 text-blue-600" />
+                      </div>
+                    </div>
+                    <div>
+                      <h4 className="text-sm font-medium">{feature.title || "Untitled Feature"}</h4>
+                      <p className="text-xs text-gray-600 mt-1">{feature.description || "No description"}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </motion.div>
       </div>
     </div>
