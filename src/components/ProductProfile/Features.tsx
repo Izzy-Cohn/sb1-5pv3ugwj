@@ -1,10 +1,10 @@
 import { motion } from 'framer-motion';
-import type { LucideIcon } from 'lucide-react';
+import { Star } from 'lucide-react';
 
 interface ProductFeature {
   title: string;
   description: string;
-  icon?: LucideIcon;
+  icon?: string;
   imageUrl?: string;
 }
 
@@ -25,7 +25,7 @@ export function Features({ features }: FeaturesProps) {
         >
           {feature.icon ? (
             <div className="w-24 h-24 rounded-lg bg-primary/10 flex items-center justify-center">
-              {feature.icon && <feature.icon className="w-12 h-12 text-primary" />}
+              <Star className="w-12 h-12 text-primary" />
             </div>
           ) : (
             <img
