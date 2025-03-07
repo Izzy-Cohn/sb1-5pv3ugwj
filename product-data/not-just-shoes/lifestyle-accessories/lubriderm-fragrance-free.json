@@ -1,52 +1,47 @@
 {
-    "name": "Lubriderm Fragrance Free Daily Moisture Lotion",
-    "brand": "Lubriderm",
-    "description": "Dermatologist-developed moisturizing lotion with Pro-Ceramide, Shea Butter & Glycerin for sensitive skin",
-    "longDescription": "Lubriderm Fragrance Free Daily Moisture Lotion is a dermatologist-developed formula that delivers clinically proven 24-hour moisture for healthier-looking skin. Enriched with Pro-Ceramide, Shea Butter, and Glycerin, this gentle yet effective lotion helps restore your skin's essential moisture while strengthening its natural barrier. The non-greasy, fast-absorbing formula is ideal for daily use on face, hands, and body, making it a versatile addition to any skincare routine.\n\nSpecially formulated for sensitive skin, this fragrance-free lotion is non-comedogenic and won't clog pores. It absorbs quickly without leaving any sticky residue behind, allowing you to get dressed immediately after application. The dermatologist-tested formula is gentle enough for everyday use while providing the deep hydration your skin needs.\n\nWith its pump dispenser and generous 24 fl. oz size, this lotion offers convenient, economical skincare for the entire family. Perfect for dry winter months or year-round hydration, Lubriderm Fragrance Free Daily Moisture Lotion keeps your skin feeling soft, smooth, and naturally healthy day after day.",
-    "price": 12.72,
-    "imageUrl": "https://m.media-amazon.com/images/I/71Uwp7i6PxL._SL1500_.jpg",
-    "amazonUrl": "https://www.amazon.com/Lubriderm-Moisture-Lotion-Fragrance-Free-Normal/dp/B075G3RJDZ/",
-    "recommendation_category_id": 1,
-    "features": [
-      {
-        "title": "Pro-Ceramide Technology",
-        "description": "Contains essential lipids naturally found in healthy skin that help strengthen your skin's moisture barrier and prevent water loss for long-lasting hydration.",
-        "icon": "Shield"
-      },
-      {
-        "title": "Enriched with Shea Butter",
-        "description": "Premium shea butter deeply nourishes skin, improving elasticity and providing intensive moisture for even the driest areas without feeling heavy or greasy.",
-        "icon": "Layers"
-      },
-      {
-        "title": "Glycerin-Infused Formula",
-        "description": "Natural humectant glycerin attracts moisture to the skin and locks it in, creating a protective layer that keeps skin hydrated throughout the day and night.",
-        "icon": "Footprints"
-      },
-      {
-        "title": "Sensitive Skin Friendly",
-        "description": "Fragrance-free, non-comedogenic formula is dermatologist tested and specially developed for sensitive skin, providing gentle care without irritation.",
-        "icon": "Heart"
-      }
-    ],
-    "pros": [
-      "Fast-absorbing formula leaves no greasy residue",
-      "Fragrance-free, ideal for sensitive skin",
-      "Provides 24-hour moisture in a single application",
-      "Versatile for use on face, hands, and body",
-      "Non-comedogenic formula won't clog pores",
-      "Dermatologist developed and tested",
-      "Economical large 24 fl. oz size with convenient pump",
-      "Helps strengthen skin's natural moisture barrier",
-      "No sticky or tacky feeling after application"
-    ],
-    "cons": [
-      "May be too lightweight for extremely dry skin conditions",
-      "Some users may prefer a scented option (though fragrance-free is ideal for sensitive skin)",
-      "Not specialized for specific skin concerns like eczema",
-      "Basic formula without anti-aging ingredients",
-      "May need more frequent application in very dry climates"
-    ],
-    "videoId": "",
-    "dateGenerated": "2024-06-11"
-  }
+  "name": "Lubriderm Fragrance Free Daily Moisture Lotion",
+  "brand": "Lubriderm",
+  "description": "A non-greasy, fragrance-free lotion designed for normal to dry skin, delivering long-lasting hydration.",
+  "longDescription": "Lubriderm Moisture Lotion is a dermatologist-recommended formula that provides deep hydration without a greasy feel. Specially designed for normal to dry skin, this fragrance-free lotion absorbs quickly to deliver essential moisture, helping maintain the skin’s natural balance. Perfect for daily use, it leaves your skin feeling smooth, refreshed, and comfortably hydrated throughout the day. The 14.8 fl oz bottle ensures you have a lasting supply for ongoing care.",
+  "price": "$12.72",
+  "amazonUrl": "https://www.amazon.com/dp/B075G3RJDZ/ref=sspa_dk_detail_0?psc=1&pd_rd_i=B075G3RJDZ&pd_rd_w=YJMtE&content-id=amzn1.sym.8c2f9165-8e93-42a1-8313-73d3809141a2&pf_rd_p=8c2f9165-8e93-42a1-8313-73d3809141a2&pf_rd_r=2A00GVJVEB5B31N4ZGRC&pd_rd_wg=NpdEJ&pd_rd_r=24e9dad0-8a2d-485a-9c07-73e015e29ba7&s=beauty&sp_csd=d2lkZ2V0TmFtZT1zcF9kZXRhaWw",
+  "videoId": "",
+  "features": [
+    {
+      "title": "Non-Greasy Formula",
+      "description": "Lightweight lotion that absorbs quickly without leaving a residue.",
+      "icon": "star"
+    },
+    {
+      "title": "Fragrance-Free",
+      "description": "Ideal for sensitive skin, free of added fragrances that can cause irritation.",
+      "icon": "star"
+    },
+    {
+      "title": "Long-Lasting Hydration",
+      "description": "Provides sustained moisture to keep skin soft and smooth all day.",
+      "icon": "star"
+    },
+    {
+      "title": "Dermatologist Recommended",
+      "description": "Clinically tested formula trusted by professionals for effective care.",
+      "icon": "star"
+    },
+    {
+      "title": "For Normal to Dry Skin",
+      "description": "Specially formulated to address the needs of normal to dry skin.",
+      "icon": "star"
+    }
+  ],
+  "pros": [
+    "Delivers effective, long-lasting hydration",
+    "Non-greasy and quick-absorbing formula",
+    "Fragrance-free and gentle on sensitive skin",
+    "Dermatologist recommended for everyday use"
+  ],
+  "cons": [
+    "May not provide enough moisture for extremely dry skin",
+    "Some users might prefer a lightly scented lotion",
+    "Bottle size may not suffice for heavy use"
+  ]
+}

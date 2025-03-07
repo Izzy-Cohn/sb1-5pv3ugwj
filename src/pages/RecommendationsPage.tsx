@@ -1,7 +1,6 @@
 import { useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { RecommendationItem } from '../components/Recommendations/RecommendationsList/RecommendationItem';
-import { Award } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { supabase } from '../utils/supabase';
 
@@ -124,12 +123,11 @@ export function RecommendationsPage() {
           animate={{ opacity: 1, y: 0 }}
           className="text-center text-white z-10"
         >
-          <Award className="w-20 h-20 mx-auto mb-4 drop-shadow-[0_2px_2px_rgba(0,0,0,0.3)]" />
           <h1 className="text-4xl md:text-5xl font-bold mb-4 text-white drop-shadow-[0_2px_2px_rgba(0,0,0,0.3)]">
             {recommendationData.title}
           </h1>
           <p className="text-xl text-gray-900 font-medium drop-shadow-[0_1px_1px_rgba(255,255,255,0.5)]">
-            {isInsertCategory ? 'Expert-Tested Picks' : 'Top 10 Expert-Tested Picks'}
+            Expert-Tested Picks
           </p>
         </motion.div>
       </div>
@@ -151,7 +149,6 @@ export function RecommendationsPage() {
                 imageUrl={product.image_url}
                 price={typeof product.price === 'number' ? `$${product.price}` : product.price}
                 amazonUrl={product.amazon_url}
-                rank={index + 1}
                 index={index}
               />
             ))}

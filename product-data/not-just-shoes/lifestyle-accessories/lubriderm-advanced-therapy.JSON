@@ -1,0 +1,43 @@
+{
+    "name": "Lubriderm Advanced Therapy Moisturizing Hand and Body Lotion",
+    "brand": "Lubriderm",
+    "description": "A clinically advanced, non-greasy lotion for deep hydration and restoration of the skin’s moisture barrier for both hands and body.",
+    "longDescription": "Lubriderm Advanced Therapy Moisturizing Hand and Body Lotion is designed to deliver long-lasting hydration with a fast-absorbing, non-greasy formula that restores your skin’s natural moisture barrier. Ideal for daily use on both hands and body, this dermatologist-recommended lotion soothes and nourishes dry skin without leaving any residue. Its advanced therapeutic formulation helps lock in moisture, leaving your skin soft, smooth, and refreshed all day long.",
+    "price": "$9.97",
+    "amazonUrl": "https://www.amazon.com/Moisturizing-Pro-Ceramide-Pro-Vitamin-Non-Greasy-Fragrance-Free/dp/B08G9K79FC/",
+    "videoId": "",
+    "features": [
+      {
+        "title": "Advanced Moisturization",
+        "description": "Deeply hydrates skin while restoring the natural moisture barrier.",
+        "icon": "star"
+      },
+      {
+        "title": "Non-Greasy Formula",
+        "description": "Fast-absorbing lotion that leaves skin feeling light and comfortable.",
+        "icon": "star"
+      },
+      {
+        "title": "Dermatologist Recommended",
+        "description": "Clinically proven formula trusted by skincare professionals.",
+        "icon": "star"
+      },
+      {
+        "title": "Versatile Use",
+        "description": "Effective for both hands and body, providing comprehensive care.",
+        "icon": "star"
+      }
+    ],
+    "pros": [
+      "Provides long-lasting hydration",
+      "Non-greasy and fast-absorbing formula",
+      "Suitable for sensitive skin",
+      "Dermatologist recommended for effective care"
+    ],
+    "cons": [
+      "May require reapplication for extremely dry skin",
+      "Some users might prefer a lightly scented lotion",
+      "Bottle size may be insufficient for heavy use"
+    ]
+  }
+  
