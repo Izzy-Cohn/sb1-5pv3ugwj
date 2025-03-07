@@ -233,19 +233,7 @@ export const productCategoriesData: ProductCategoriesData = {
         ]
       },
       'lifestyle-accessories': {
-        title: 'Best Lifestyle Accessories of 2025',
-        items: []
-      },
-      'athletic-wear': {
-        title: 'Top Athletic Wear Collections of 2025',
-        items: []
-      },
-      'fashion-essentials': {
-        title: 'Must-Have Fashion Essentials of 2025',
-        items: []
-      },
-      'sustainable-products': {
-        title: 'Best Sustainable Products of 2025',
+        title: 'Best Skin Care Products for Feet of 2025',
         items: []
       }
     }

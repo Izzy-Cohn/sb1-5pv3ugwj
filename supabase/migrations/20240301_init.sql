@@ -129,10 +129,7 @@ SELECT
 FROM (
   VALUES 
     ('best-inserts', 'Best Inserts and Pads of 2025'),
-    ('lifestyle-accessories', 'Best Lifestyle Accessories of 2025'),
-    ('athletic-wear', 'Top Athletic Wear Collections of 2025'),
-    ('fashion-essentials', 'Must-Have Fashion Essentials of 2025'),
-    ('sustainable-products', 'Best Sustainable Products of 2025')
+    ('lifestyle-accessories', 'Best Skin Care Products for Feet of 2025')
 ) AS data(rec_slug, rec_title)
 CROSS JOIN product_categories pc
 WHERE pc.slug = 'not-just-shoes'; 
