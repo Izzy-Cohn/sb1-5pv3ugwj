@@ -91,20 +91,8 @@ export const productCategories: ProductCategory[] = [
         slug: 'best-inserts'
       },
       {
-        title: 'Best Lifestyle Accessories of 2025',
+        title: 'Best Skin Care Products for Feet of 2025',
         slug: 'lifestyle-accessories'
-      },
-      {
-        title: 'Top Athletic Wear Collections of 2025',
-        slug: 'athletic-wear'
-      },
-      {
-        title: 'Must-Have Fashion Essentials of 2025',
-        slug: 'fashion-essentials'
-      },
-      {
-        title: 'Best Sustainable Products of 2025',
-        slug: 'sustainable-products'
       }
     ]
   }
