@@ -76,20 +76,44 @@ export function ProductPage() {
         // Convert productId (slug) into a searchable format
         const formattedProductName = productId.replace(/-/g, ' ');
         
-        // Get the product by name and recommendation category
-        const { data: productData, error: productError } = await supabase
+        // Get the product by recommendation category and either exact slug match or name search
+        const { data: productResults, error: productSearchError } = await supabase
           .from('products')
           .select('*')
           .eq('recommendation_category_id', recommendationCategoryData.id)
-          .ilike('name', formattedProductName)
-          .single();
+          .or(`slug.eq.${productId},name.ilike.%${formattedProductName}%`);
           
-        if (productError) {
-          throw new Error(`Error fetching product: ${productError.message}`);
+        if (productSearchError) {
+          throw new Error(`Error searching for product: ${productSearchError.message}`);
         }
         
-        if (!productData) {
+        if (!productResults || productResults.length === 0) {
           throw new Error(`Product "${productId}" not found`);
+        }
+        
+        // If we have multiple results, try to find the best match
+        // or just use the first one if we can't determine
+        let productData;
+        if (productResults.length > 1) {
+          // First try to find an exact slug match
+          const exactSlugMatch = productResults.find(p => p.slug === productId);
+          if (exactSlugMatch) {
+            productData = exactSlugMatch;
+          } else {
+            // Otherwise, use the first result
+            productData = productResults[0];
+            console.warn(`Multiple products found for "${productId}", using first match: "${productData.name}"`);
+          }
+        } else {
+          productData = productResults[0];
+        }
+        
+        // Ensure feature icons are properly formatted as strings
+        if (productData.features) {
+          productData.features = productData.features.map(feature => ({
+            ...feature,
+            icon: typeof feature.icon === 'string' ? feature.icon : 'star' // Ensure icon is a string
+          }));
         }
         
         setProduct(productData);
@@ -131,8 +155,9 @@ export function ProductPage() {
     price: typeof product.price === 'number' ? `$${product.price}` : product.price,
     images: [product.image_url], // In the future, we can support multiple images
     features: product.features?.map(feature => ({
-      ...feature,
-      icon: iconMap[feature.icon] || Shield
+      title: feature.title,
+      description: feature.description,
+      icon: feature.icon // Keep as string for the Features component
     })) || [],
     pros: product.pros || [],
     cons: product.cons || [],
