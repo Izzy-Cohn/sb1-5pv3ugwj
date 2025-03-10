@@ -1,0 +1,43 @@
+{
+    "name": "Warwick Enterprises Adjustable Heel Lift",
+    "brand": "Warwick Enterprises",
+    "description": "An adjustable heel lift designed to alleviate leg length discrepancy and provide enhanced cushioning and support for improved comfort.",
+    "longDescription": "Warwick Enterprises Adjustable Heel Lift is crafted to offer customizable elevation for individuals with leg length discrepancies. Its innovative, adjustable design ensures a personalized fit that helps correct posture and reduce stress on the feet, knees, and back. Made from durable, high-quality materials, this heel lift delivers superior cushioning and long-lasting comfort, making it an ideal choice for daily wear. Enjoy improved alignment and reduced discomfort with this effective, non-invasive solution for foot support.",
+    "price": "$16.69",
+    "amazonUrl": "https://www.amazon.com/Warwick-Enterprises-Adjust-Heel-Lift/dp/B004JMG3C4/",
+    "videoId": "",
+    "features": [
+      {
+        "title": "Customizable Fit",
+        "description": "Adjustable design allows for a personalized fit to match your specific heel height needs.",
+        "icon": "star"
+      },
+      {
+        "title": "Enhanced Comfort",
+        "description": "Provides extra cushioning and support to alleviate foot and leg discomfort.",
+        "icon": "star"
+      },
+      {
+        "title": "Durable Construction",
+        "description": "Built with high-quality materials for lasting use and reliability.",
+        "icon": "star"
+      },
+      {
+        "title": "Improves Posture",
+        "description": "Helps correct leg length discrepancy, contributing to better alignment and posture.",
+        "icon": "star"
+      }
+    ],
+    "pros": [
+      "Adjustable for a customized fit",
+      "Durable construction for long-term use",
+      "Enhances overall comfort and reduces foot pain",
+      "Aids in improving posture and alignment"
+    ],
+    "cons": [
+      "May require a brief adjustment period",
+      "Not suitable for severe foot or leg issues",
+      "Limited size options may not fit all shoe types"
+    ]
+  }
+  

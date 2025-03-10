@@ -1,0 +1,42 @@
+{
+    "name": "Brooks Adrenaline GTS 24 Supportive Running Shoe",
+    "brand": "Brooks",
+    "description": "A high-performance running shoe engineered for stability, cushioning, and support for a smooth, comfortable run.",
+    "longDescription": "The Brooks Adrenaline Alloy Fusion Medium is designed for runners seeking a balanced blend of cushioning, stability, and durability. Featuring responsive cushioning that absorbs impact and a secure, adaptive fit, these shoes help enhance your running performance on various terrains. The engineered outsole provides reliable traction and long-lasting durability, while the modern design ensures both style and performance. Whether you're training for long distances or enjoying a daily jog, these shoes deliver consistent support and comfort.",
+    "price": "$119.99",
+    "amazonUrl": "https://www.amazon.com/Brooks-Adrenaline-Alloy-Fusion-Medium/dp/B0CQTM93QG/",
+    "videoId": "",
+    "features": [
+      {
+        "title": "Responsive Cushioning",
+        "description": "Advanced cushioning technology absorbs impact and ensures a smooth ride.",
+        "icon": "star"
+      },
+      {
+        "title": "Stability & Support",
+        "description": "Engineered for enhanced stability and support during your runs.",
+        "icon": "star"
+      },
+      {
+        "title": "Durable Outsole",
+        "description": "Provides excellent traction and long-lasting durability on various surfaces.",
+        "icon": "star"
+      },
+      {
+        "title": "Adaptive Fit",
+        "description": "Secure, adaptive fit that conforms to your foot for maximum comfort.",
+        "icon": "star"
+      }
+    ],
+    "pros": [
+      "Excellent cushioning and impact absorption",
+      "Provides reliable stability and support",
+      "Very popular",
+      "Lighweight compared to other options",
+      "Many color options including full black"
+    ],
+    "cons": [
+      "Higher price point may not suit all budgets"
+    ]
+  }
+  
