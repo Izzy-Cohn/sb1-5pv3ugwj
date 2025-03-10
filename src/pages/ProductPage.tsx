@@ -73,44 +73,47 @@ export function ProductPage() {
           throw new Error(`Error fetching recommendation category: ${recommendationCategoryError.message}`);
         }
         
-        // Convert productId (slug) into a searchable format
-        const formattedProductName = productId.replace(/-/g, ' ');
-        
-        // Get the product by recommendation category and either exact slug match or name search
-        const { data: productResults, error: productSearchError } = await supabase
+        // Get all products for this recommendation category
+        const { data: products, error: productsError } = await supabase
           .from('products')
           .select('*')
-          .eq('recommendation_category_id', recommendationCategoryData.id)
-          .or(`slug.eq.${productId},name.ilike.%${formattedProductName}%`);
+          .eq('recommendation_category_id', recommendationCategoryData.id);
           
-        if (productSearchError) {
-          throw new Error(`Error searching for product: ${productSearchError.message}`);
+        if (productsError) {
+          throw new Error(`Error fetching products: ${productsError.message}`);
         }
         
-        if (!productResults || productResults.length === 0) {
+        if (!products || products.length === 0) {
+          throw new Error(`No products found for this category`);
+        }
+        
+        // Look for a matching product based on various criteria
+        // 1. First try to match by exact slug if it exists
+        let productData = products.find(p => p.slug === productId);
+        
+        // 2. If no match, try to find by matching the name to the productId
+        if (!productData) {
+          const formattedProductId = productId.replace(/-/g, ' ').toLowerCase();
+          
+          // Try to find a product whose name contains the formatted productId
+          productData = products.find(p => 
+            p.name.toLowerCase().includes(formattedProductId)
+          );
+        }
+        
+        // 3. If still no match, just use the first product
+        if (!productData && products.length > 0) {
+          console.warn(`No exact match found for "${productId}", using first product`);
+          productData = products[0];
+        }
+        
+        if (!productData) {
           throw new Error(`Product "${productId}" not found`);
         }
         
-        // If we have multiple results, try to find the best match
-        // or just use the first one if we can't determine
-        let productData;
-        if (productResults.length > 1) {
-          // First try to find an exact slug match
-          const exactSlugMatch = productResults.find(p => p.slug === productId);
-          if (exactSlugMatch) {
-            productData = exactSlugMatch;
-          } else {
-            // Otherwise, use the first result
-            productData = productResults[0];
-            console.warn(`Multiple products found for "${productId}", using first match: "${productData.name}"`);
-          }
-        } else {
-          productData = productResults[0];
-        }
-        
-        // Ensure feature icons are properly formatted as strings
+        // Process product features to ensure types are correct
         if (productData.features) {
-          productData.features = productData.features.map(feature => ({
+          productData.features = productData.features.map((feature: { title: string; description: string; icon: string }) => ({
             ...feature,
             icon: typeof feature.icon === 'string' ? feature.icon : 'star' // Ensure icon is a string
           }));
