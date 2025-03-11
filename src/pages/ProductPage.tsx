@@ -73,38 +73,16 @@ export function ProductPage() {
           throw new Error(`Error fetching recommendation category: ${recommendationCategoryError.message}`);
         }
         
-        // Get all products for this recommendation category
-        const { data: products, error: productsError } = await supabase
+        // Get the product by slug - direct lookup by the slug from URL
+        const { data: productData, error: productError } = await supabase
           .from('products')
           .select('*')
-          .eq('recommendation_category_id', recommendationCategoryData.id);
+          .eq('recommendation_category_id', recommendationCategoryData.id)
+          .eq('slug', productId)
+          .single();
           
-        if (productsError) {
-          throw new Error(`Error fetching products: ${productsError.message}`);
-        }
-        
-        if (!products || products.length === 0) {
-          throw new Error(`No products found for this category`);
-        }
-        
-        // Look for a matching product based on various criteria
-        // 1. First try to match by exact slug if it exists
-        let productData = products.find(p => p.slug === productId);
-        
-        // 2. If no match, try to find by matching the name to the productId
-        if (!productData) {
-          const formattedProductId = productId.replace(/-/g, ' ').toLowerCase();
-          
-          // Try to find a product whose name contains the formatted productId
-          productData = products.find(p => 
-            p.name.toLowerCase().includes(formattedProductId)
-          );
-        }
-        
-        // 3. If still no match, just use the first product
-        if (!productData && products.length > 0) {
-          console.warn(`No exact match found for "${productId}", using first product`);
-          productData = products[0];
+        if (productError) {
+          throw new Error(`Product "${productId}" not found`);
         }
         
         if (!productData) {

@@ -12,6 +12,7 @@ interface Product {
   image_url: string;
   price: string | number;
   amazon_url?: string;
+  slug: string;
 }
 
 interface RecommendationCategory {
@@ -71,7 +72,7 @@ export function RecommendationsPage() {
         // Finally get the products for this recommendation category
         const { data: productsData, error: productsError } = await supabase
           .from('products')
-          .select('id, name, brand, description, image_url, price, amazon_url')
+          .select('id, name, brand, description, image_url, price, amazon_url, slug')
           .eq('recommendation_category_id', recommendationCategoryData.id)
           .order('created_at', { ascending: false });
           
@@ -149,6 +150,7 @@ export function RecommendationsPage() {
                 imageUrl={product.image_url}
                 price={typeof product.price === 'number' ? `$${product.price}` : product.price}
                 amazonUrl={product.amazon_url}
+                slug={product.slug}
                 index={index}
               />
             ))}
