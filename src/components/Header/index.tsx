@@ -31,6 +31,10 @@ export function Header() {
           </div>
         </div>
       </div>
+      {/* Admin link fixed to the right side */}
+      <div className="hidden md:flex fixed right-8 top-0 h-16 items-center">
+        <NavItem title="Admin" href="/admin" />
+      </div>
     </motion.header>
   );
 }
