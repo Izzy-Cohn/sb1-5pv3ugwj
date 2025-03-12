@@ -5,9 +5,6 @@ import { PlusCircle, X, ChevronDown, ChevronUp, Star, Lock } from 'lucide-react'
 import { iconMap } from '../utils/icons';
 import IconPicker from '../components/IconPicker';
 
-// The password for accessing the admin page
-// In a real app, this would be handled by proper authentication
-const ADMIN_PASSWORD = 'FootCareAdmin2024!';
 
 interface ProductCategory {
   id: number;
@@ -84,15 +81,27 @@ export function AdminPage() {
   }, []);
 
   // Handle login submit
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoginError('');
     
-    if (password === ADMIN_PASSWORD) {
-      setIsAuthenticated(true);
-      setLoginError('');
-      localStorage.setItem('adminAuthenticated', 'true');
-    } else {
-      setLoginError('Invalid password. Please try again.');
+    try {
+      // Call RPC function to verify admin password
+      const { data: isValid, error } = await supabase.rpc('verify_admin_password', {
+        p_password: password
+      });
+      
+      if (error) throw error;
+      
+      if (isValid === true) {
+        setIsAuthenticated(true);
+        localStorage.setItem('adminAuthenticated', 'true');
+      } else {
+        setLoginError('Invalid password. Please try again.');
+      }
+    } catch (err) {
+      console.error('Login error:', err);
+      setLoginError('Authentication failed. Please try again.');
     }
   };
 
