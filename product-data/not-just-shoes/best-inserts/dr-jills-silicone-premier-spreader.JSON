@@ -1,0 +1,44 @@
+{
+    "name": "Dr. Jill's Silicone Premier Spreader",
+    "slug": "dr-jills-silicone-premier-spreader",
+    "brand": "Dr. Jill's",
+    "description": "A premium silicone spreader designed to gently realign and separate toes for improved comfort and reduced friction.",
+    "longDescription": "Dr. Jill's Silicone Premier Spreader is engineered with high-quality, medical-grade silicone to help realign and separate your toes, easing pressure and minimizing discomfort during daily activities or while wearing dance shoes. Its ergonomic design ensures a comfortable fit that promotes natural toe alignment, which can be especially beneficial for individuals experiencing bunions or overlapping toes. Easy to clean and durable, this spreader is an effective solution for maintaining foot health and reducing friction-induced calluses.",
+    "price": "$12.99",
+    "amazonUrl": "https://www.amazon.com/Dr-Jills-Silicone-Premier-Spreader/dp/B09RPB86F1/",
+    "videoId": "",
+    "features": [
+      {
+        "title": "Ergonomic Design",
+        "description": "Contoured to comfortably separate and realign toes, promoting natural alignment.",
+        "icon": "star"
+      },
+      {
+        "title": "High-Quality Silicone",
+        "description": "Crafted from durable, medical-grade silicone for long-lasting performance.",
+        "icon": "star"
+      },
+      {
+        "title": "Easy to Clean",
+        "description": "Non-porous material allows for quick and effortless cleaning.",
+        "icon": "star"
+      },
+      {
+        "title": "Versatile Use",
+        "description": "Ideal for dancers and everyday use to reduce foot discomfort and friction.",
+        "icon": "star"
+      }
+    ],
+    "pros": [
+      "Improves toe alignment and reduces discomfort",
+      "Durable, high-quality silicone construction",
+      "Ergonomic design provides a comfortable fit",
+      "Easy to clean and maintain"
+    ],
+    "cons": [
+      "May not fit all foot shapes perfectly",
+      "Some users may require an adjustment period",
+      "Limited color options available"
+    ]
+  }
+  
