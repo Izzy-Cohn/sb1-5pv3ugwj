@@ -1,0 +1,44 @@
+{
+    "name": "ASICS Gel Kayano 31 Running Shoes",
+    "slug": "asics-gel-kayano-31-running-shoes",
+    "brand": "ASICS",
+    "description": "A premium running shoe featuring advanced GEL cushioning and enhanced stability, engineered for a responsive, comfortable run.",
+    "longDescription": "The ASICS Gel Kayano 31 Running Shoes are built with cutting-edge GEL technology that delivers exceptional cushioning and shock absorption. Designed for runners seeking both performance and comfort, these shoes provide enhanced stability and a secure, ergonomic fit. The breathable upper ensures superior ventilation while the durable outsole offers reliable traction across various surfaces. Ideal for long-distance runs and everyday training, the Gel Kayano 31 combines innovative design with lasting durability for an outstanding running experience.",
+    "price": "$159.99",
+    "amazonUrl": "https://www.amazon.com/ASICS-Gel-Kayano-Running-Shoes-Piedmont/dp/B0CN82GCQ3/",
+    "videoId": "",
+    "features": [
+      {
+        "title": "Advanced GEL Cushioning",
+        "description": "Innovative GEL technology absorbs shock and enhances comfort during every stride.",
+        "icon": "star"
+      },
+      {
+        "title": "Enhanced Stability",
+        "description": "Rocker bottom shape for knee/hip/ankle relief",
+        "icon": "star"
+      },
+      {
+        "title": "Breathable Upper",
+        "description": "Lightweight, ventilated upper ensures excellent airflow for all-day comfort.",
+        "icon": "star"
+      },
+      {
+        "title": "Ergonomic Fit",
+        "description": "Adaptive design conforms to your foot for a customized, secure fit.",
+        "icon": "star"
+      }
+    ],
+    "pros": [
+      "Rocker bottom shape for knee/hip/ankle relief",
+      "Exceptional cushioning and shock absorption",
+      "Provides superior stability and support",
+      "Breathable, lightweight design for comfort",
+      "Durable construction ideal for long-distance running"
+    ],
+    "cons": [
+      "Higher price point compared to some competitors",
+      "May feel narrow for wider feet"
+    ]
+  }
+  

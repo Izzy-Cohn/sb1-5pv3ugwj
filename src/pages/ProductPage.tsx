@@ -5,115 +5,199 @@ import { Features } from '../components/ProductProfile/Features';
 import { ProsAndCons } from '../components/ProductProfile/ProsAndCons';
 import { VideoReview } from '../components/ProductProfile/VideoReview';
 import { Shield, Layers, Footprints } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { supabase } from '../utils/supabase';
+
+interface ProductDetail {
+  id: number;
+  name: string;
+  brand: string;
+  description: string;
+  long_description: string | null;
+  image_url: string;
+  price: string | number;
+  amazon_url: string | null;
+  features: {
+    title: string;
+    description: string;
+    icon: string;
+  }[] | null;
+  pros: string[] | null;
+  cons: string[] | null;
+  video_id: string | null;
+}
+
+// Map icon names to components
+const iconMap: Record<string, React.ElementType> = {
+  Shield,
+  Layers,
+  Footprints
+};
 
 export function ProductPage() {
-  useParams();
-  
-  const product = {
-    id: 'powerstep-pulse-maxx',
-    name: 'PowerStep Pulse Maxx Running Insoles',
-    brand: 'PowerStep',
-    description: 'Overpronation Corrective Orthotic Inserts for Running Shoes',
-    longDescription: `The PowerStep Pulse Maxx Running Insoles represent the latest in orthotic technology, 
-    specifically designed for runners who need maximum support and stability. These insoles feature a unique 
-    combination of firm but flexible support shell, dual-layer cushioning, and a deep heel cradle for enhanced 
-    stability. The angled exterior heel platform helps control excess motion while running, making them perfect 
-    for overpronation and various foot conditions. The insoles are topped with an antimicrobial fabric that 
-    helps reduce heat and friction while maintaining a fresh environment for your feet.`,
-    price: '$47.95',
-    images: [
-      'https://m.media-amazon.com/images/I/81qfPtgpVYL._AC_SL1500_.jpg',
-      'https://m.media-amazon.com/images/I/81Ry9MtQIBL._AC_SL1500_.jpg',
-      'https://m.media-amazon.com/images/I/81H4DjkegrL._AC_SL1500_.jpg',
-      'https://m.media-amazon.com/images/I/81vNBVW1SDL._AC_SL1500_.jpg'
-    ],
-    features: [
-      {
-        title: 'Maximum Support Shell',
-        description: 'Medical-grade foot support with firm but flexible shell for motion control and stability.',
-        icon: Shield
-      },
-      {
-        title: 'Dual-Layer Cushioning',
-        description: 'VCT® Variable Cushioning Technology combines targeted and controlled cushioning for superior comfort.',
-        icon: Layers
-      },
-      {
-        title: 'Deep Heel Cradle',
-        description: 'Enhanced stability and support with angled exterior heel platform for motion control.',
-        icon: Footprints
-      }
-    ],
-    pros: [
-      'Maximum arch support and stability',
-      'Excellent motion control for overpronation',
-      'Antimicrobial top fabric',
-      'Deep heel cradle for enhanced stability',
-      'Dual-layer cushioning system',
-      'Can be trimmed to fit',
-      'Made in the USA'
-    ],
-    cons: [
-      'May feel firm initially and require break-in period',
-      'Might be too rigid for neutral runners',
-      'Higher price point compared to basic insoles',
-      'May not fit all shoe types'
-    ],
-    videoId: 'dQw4w9WgXcQ' // Placeholder - would need actual product video ID
-  };
+  const { category, slug, productId } = useParams();
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [product, setProduct] = useState<ProductDetail | null>(null);
 
-  if (!product) {
+  useEffect(() => {
+    async function fetchData() {
+      setLoading(true);
+      setError(null);
+      
+      try {
+        if (!category || !slug || !productId) {
+          throw new Error('Missing parameters');
+        }
+        
+        // First get the product category ID
+        const { data: productCategoryData, error: productCategoryError } = await supabase
+          .from('product_categories')
+          .select('id')
+          .eq('slug', category)
+          .single();
+          
+        if (productCategoryError) {
+          throw new Error(`Error fetching product category: ${productCategoryError.message}`);
+        }
+        
+        // Then get the recommendation category ID
+        const { data: recommendationCategoryData, error: recommendationCategoryError } = await supabase
+          .from('recommendation_categories')
+          .select('id')
+          .eq('product_category_id', productCategoryData.id)
+          .eq('slug', slug)
+          .single();
+          
+        if (recommendationCategoryError) {
+          throw new Error(`Error fetching recommendation category: ${recommendationCategoryError.message}`);
+        }
+        
+        // Get the product by slug - direct lookup by the slug from URL
+        const { data: productData, error: productError } = await supabase
+          .from('products')
+          .select('*')
+          .eq('recommendation_category_id', recommendationCategoryData.id)
+          .eq('slug', productId)
+          .single();
+          
+        if (productError) {
+          throw new Error(`Product "${productId}" not found`);
+        }
+        
+        if (!productData) {
+          throw new Error(`Product "${productId}" not found`);
+        }
+        
+        // Process product features to ensure types are correct
+        if (productData.features) {
+          productData.features = productData.features.map((feature: { title: string; description: string; icon: string }) => ({
+            ...feature,
+            icon: typeof feature.icon === 'string' ? feature.icon : 'star' // Ensure icon is a string
+          }));
+        }
+        
+        setProduct(productData);
+      } catch (err) {
+        console.error(err);
+        setError(err instanceof Error ? err.message : 'An unknown error occurred');
+      } finally {
+        setLoading(false);
+      }
+    }
+    
+    fetchData();
+  }, [category, slug, productId]);
+
+  if (loading) {
     return (
       <div className="h-screen flex items-center justify-center">
-        <h1 className="text-2xl text-gray-600">Product not found</h1>
+        <div className="text-2xl text-gray-600">Loading...</div>
       </div>
     );
   }
+
+  if (error || !product) {
+    return (
+      <div className="h-screen flex items-center justify-center">
+        <div className="text-2xl text-gray-600">
+          {error || 'Product not found'}
+        </div>
+      </div>
+    );
+  }
+
+  // Prepare the display data
+  const displayProduct = {
+    name: product.name,
+    brand: product.brand,
+    description: product.description,
+    longDescription: product.long_description || product.description,
+    price: typeof product.price === 'number' ? `$${product.price}` : product.price,
+    images: [product.image_url], // In the future, we can support multiple images
+    features: product.features?.map(feature => ({
+      title: feature.title,
+      description: feature.description,
+      icon: feature.icon // Keep as string for the Features component
+    })) || [],
+    pros: product.pros || [],
+    cons: product.cons || [],
+    videoId: product.video_id || '',
+    amazonUrl: product.amazon_url
+  };
 
   return (
     <div className="pt-16">
       <div className="max-w-7xl mx-auto px-4 py-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          <ImageGallery images={product.images} />
+          <ImageGallery images={displayProduct.images} />
           
           <div>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
             >
-              <h1 className="text-4xl font-bold mb-2">{product.name}</h1>
-              <p className="text-xl text-gray-600 mb-4">{product.brand}</p>
-              <p className="text-3xl font-bold text-primary mb-6">{product.price}</p>
-              <p className="text-gray-700 mb-8">{product.longDescription}</p>
+              <h1 className="text-4xl font-bold mb-2">{displayProduct.name}</h1>
+              <p className="text-xl text-gray-600 mb-4">{displayProduct.brand}</p>
+              <p className="text-3xl font-bold text-primary mb-6">{displayProduct.price}</p>
+              <p className="text-gray-700 mb-8">{displayProduct.longDescription}</p>
               
-              <a 
-                href="https://amzn.to/4jUFzBO" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="block w-full"
-              >
-                <button className="w-full bg-[#f3a736] text-white py-3 rounded-lg font-semibold hover:bg-[#f3a736]/90 transition-colors">
-                  Buy on Amazon
-                </button>
-              </a>
+              {displayProduct.amazonUrl ? (
+                <a 
+                  href={displayProduct.amazonUrl} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="block w-full"
+                >
+                  <button className="w-full bg-[#f3a736] text-white py-3 rounded-lg font-semibold hover:bg-[#f3a736]/90 transition-colors">
+                    Buy on Amazon
+                  </button>
+                </a>
+              ) : null}
             </motion.div>
           </div>
         </div>
 
-        <section className="mt-24">
-          <h2 className="text-3xl font-bold mb-12">Key Features</h2>
-          <Features features={product.features} />
-        </section>
+        {displayProduct.features && displayProduct.features.length > 0 && (
+          <section className="mt-24">
+            <h2 className="text-3xl font-bold mb-12">Key Features</h2>
+            <Features features={displayProduct.features} />
+          </section>
+        )}
 
-        <section className="mt-24">
-          <h2 className="text-3xl font-bold mb-12">Pros & Cons</h2>
-          <ProsAndCons pros={product.pros} cons={product.cons} />
-        </section>
+        {displayProduct.pros && displayProduct.pros.length > 0 && displayProduct.cons && displayProduct.cons.length > 0 && (
+          <section className="mt-24">
+            <h2 className="text-3xl font-bold mb-12">Pros & Cons</h2>
+            <ProsAndCons pros={displayProduct.pros} cons={displayProduct.cons} />
+          </section>
+        )}
 
-        <section className="mt-24">
-          <h2 className="text-3xl font-bold mb-12">Video Review</h2>
-          <VideoReview videoId={product.videoId} />
-        </section>
+        {displayProduct.videoId && (
+          <section className="mt-24">
+            <h2 className="text-3xl font-bold mb-12">Video Review</h2>
+            <VideoReview videoId={displayProduct.videoId} />
+          </section>
+        )}
       </div>
     </div>
   );

@@ -1,0 +1,51 @@
+{
+  "name": "PowerStep Pulse Maxx Running Insoles",
+  "slug": "powerstep-pulse-maxx-running-insoles",
+  "brand": "PowerStep",
+  "description": "Maximum cushioning and support insoles designed specifically for running, offering relief from plantar fasciitis and other foot pain while providing stability and shock absorption.",
+  "longDescription": "PowerStep Pulse Maxx Running Insoles combine maximum cushioning with targeted support to enhance your running experience while alleviating foot pain. These specialized insoles feature a deep heel cradle for stability, a firm yet flexible arch support for improved motion control, and a cushioned forefoot that minimizes impact. Designed for high-impact activities, they provide biomechanical support to prevent overpronation and reduce joint stress. The antimicrobial top fabric helps reduce friction and heat buildup, protecting against blisters during extended use. Trusted by both athletes and podiatrists, these insoles offer a durable and effective solution for foot discomfort.",
+  "price": "$47.95",
+  "amazonUrl": "https://www.amazon.com/dp/B09K4LYRS6/",
+  "videoId": "",
+  "features": [
+    {
+      "title": "Maximum Cushioning",
+      "description": "Dual-layer cushioning system for superior shock absorption.",
+      "icon": "star"
+    },
+    {
+      "title": "Enhanced Arch Support",
+      "description": "Reinforced arch support improves stability and motion control.",
+      "icon": "star"
+    },
+    {
+      "title": "Anti-Fatigue Technology",
+      "description": "Forefoot cushioning reduces fatigue during long runs.",
+      "icon": "star"
+    },
+    {
+      "title": "Deep Heel Cradle",
+      "description": "Extra-deep heel cup aligns the foot and minimizes joint stress.",
+      "icon": "star"
+    },
+    {
+      "title": "Antimicrobial Fabric",
+      "description": "Minimizes friction, heat, and odor to help prevent blisters.",
+      "icon": "star"
+    }
+  ],
+  "pros": [
+    "Specifically engineered for running and high-impact activities",
+    "Effective relief for plantar fasciitis and heel pain",
+    "Provides excellent support for overpronation",
+    "Durable design that works across multiple shoe types",
+    "Ready-to-use without any trimming required"
+  ],
+  "cons": [
+    "May feel bulky in shoes with limited space",
+    "Higher price compared to basic insoles",
+    "Some users might require a short break-in period",
+    "Firmer support may not suit those who prefer softer cushioning",
+    "Not ideal for minimalist or zero-drop footwear"
+  ]
+}

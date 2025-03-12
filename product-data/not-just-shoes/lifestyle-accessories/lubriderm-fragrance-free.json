@@ -1,0 +1,48 @@
+{
+  "name": "Lubriderm Fragrance Free Daily Moisture Lotion",
+  "slug": "lubriderm-fragrance-free-daily-moisture-lotion",
+  "brand": "Lubriderm",
+  "description": "A non-greasy, fragrance-free lotion designed for normal to dry skin, delivering long-lasting hydration.",
+  "longDescription": "Lubriderm Moisture Lotion is a dermatologist-recommended formula that provides deep hydration without a greasy feel. Specially designed for normal to dry skin, this fragrance-free lotion absorbs quickly to deliver essential moisture, helping maintain the skin's natural balance. Perfect for daily use, it leaves your skin feeling smooth, refreshed, and comfortably hydrated throughout the day. The 14.8 fl oz bottle ensures you have a lasting supply for ongoing care.",
+  "price": "$12.72",
+  "amazonUrl": "https://www.amazon.com/dp/B075G3RJDZ/ref=sspa_dk_detail_0?psc=1&pd_rd_i=B075G3RJDZ&pd_rd_w=YJMtE&content-id=amzn1.sym.8c2f9165-8e93-42a1-8313-73d3809141a2&pf_rd_p=8c2f9165-8e93-42a1-8313-73d3809141a2&pf_rd_r=2A00GVJVEB5B31N4ZGRC&pd_rd_wg=NpdEJ&pd_rd_r=24e9dad0-8a2d-485a-9c07-73e015e29ba7&s=beauty&sp_csd=d2lkZ2V0TmFtZT1zcF9kZXRhaWw",
+  "videoId": "",
+  "features": [
+    {
+      "title": "Non-Greasy Formula",
+      "description": "Lightweight lotion that absorbs quickly without leaving a residue.",
+      "icon": "star"
+    },
+    {
+      "title": "Fragrance-Free",
+      "description": "Ideal for sensitive skin, free of added fragrances that can cause irritation.",
+      "icon": "star"
+    },
+    {
+      "title": "Long-Lasting Hydration",
+      "description": "Provides sustained moisture to keep skin soft and smooth all day.",
+      "icon": "star"
+    },
+    {
+      "title": "Dermatologist Recommended",
+      "description": "Clinically tested formula trusted by professionals for effective care.",
+      "icon": "star"
+    },
+    {
+      "title": "For Normal to Dry Skin",
+      "description": "Specially formulated to address the needs of normal to dry skin.",
+      "icon": "star"
+    }
+  ],
+  "pros": [
+    "Delivers effective, long-lasting hydration",
+    "Non-greasy and quick-absorbing formula",
+    "Fragrance-free and gentle on sensitive skin",
+    "Dermatologist recommended for everyday use"
+  ],
+  "cons": [
+    "May not provide enough moisture for extremely dry skin",
+    "Some users might prefer a lightly scented lotion",
+    "Bottle size may not suffice for heavy use"
+  ]
+}
