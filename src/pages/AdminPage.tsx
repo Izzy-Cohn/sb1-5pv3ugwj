@@ -35,6 +35,7 @@ export function AdminPage() {
   const [price, setPrice] = useState('');
   const [amazonUrl, setAmazonUrl] = useState('');
   const [videoId, setVideoId] = useState('');
+  const [slug, setSlug] = useState('');
   const [features, setFeatures] = useState<FeatureItem[]>([]);
   const [pros, setPros] = useState<string[]>([]);
   const [cons, setCons] = useState<string[]>([]);
@@ -185,9 +186,20 @@ export function AdminPage() {
     
     try {
       // Validate inputs
-      if (!name || !imageUrl || !productCategoryId || !recommendationCategoryId || !amazonUrl || !description || !price || !brand) {
+      if (!name || !imageUrl || !productCategoryId || !recommendationCategoryId || !amazonUrl || !description || !price || !brand || !slug) {
         setStatus({
           message: 'Please fill in all required fields',
+          type: 'error'
+        });
+        setLoading(false);
+        return;
+      }
+
+      // Validate slug format
+      const slugRegex = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+      if (!slugRegex.test(slug)) {
+        setStatus({
+          message: 'Slug must be lowercase with hyphens instead of spaces, no special characters',
           type: 'error'
         });
         setLoading(false);
@@ -214,7 +226,8 @@ export function AdminPage() {
         description,
         image_url: imageUrl,
         price: numericPrice,
-        amazon_url: amazonUrl
+        amazon_url: amazonUrl,
+        slug // Add slug to product data
       };
       
       // Add advanced fields if they exist
@@ -253,6 +266,7 @@ export function AdminPage() {
       setPrice('');
       setAmazonUrl('');
       setVideoId('');
+      setSlug('');
       setFeatures([]);
       setPros([]);
       setCons([]);
@@ -295,6 +309,7 @@ export function AdminPage() {
         // Populate form fields with the JSON data
         if (parsedData.name) setName(parsedData.name);
         if (parsedData.brand) setBrand(parsedData.brand);
+        if (parsedData.slug) setSlug(parsedData.slug);
         if (parsedData.description) setDescription(parsedData.description);
         if (parsedData.longDescription) setLongDescription(parsedData.longDescription);
         
@@ -358,8 +373,14 @@ export function AdminPage() {
     
     try {
       // Basic validation
-      if (!data.name || !imageUrl || !price || !productCategoryId || !recommendationCategoryId) {
-        throw new Error('Missing required fields: product name, image URL, price, or categories');
+      if (!data.name || !imageUrl || !price || !productCategoryId || !recommendationCategoryId || !data.slug) {
+        throw new Error('Missing required fields: product name, slug, image URL, price, or categories');
+      }
+      
+      // Validate slug format
+      const slugRegex = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+      if (!slugRegex.test(data.slug)) {
+        throw new Error('Slug must be lowercase with hyphens instead of spaces, no special characters');
       }
       
       // Format data for database
@@ -370,7 +391,8 @@ export function AdminPage() {
         description: data.description || '',
         image_url: imageUrl, // Use manually provided image URL
         price: parseFloat(price.replace(/[^0-9.]/g, '')), // Use manually entered price
-        amazon_url: data.amazonUrl || ''
+        amazon_url: data.amazonUrl || '',
+        slug: data.slug // Add slug to product data
       };
       
       // Add optional fields
@@ -477,6 +499,26 @@ export function AdminPage() {
         type: 'error'
       });
     }
+  };
+
+  // Generate a slug from product name
+  const generateSlugFromName = () => {
+    if (!name) {
+      setStatus({
+        message: 'Please enter a product name first',
+        type: 'error'
+      });
+      return;
+    }
+    
+    // Convert to lowercase, replace spaces with hyphens, remove special characters
+    const generatedSlug = name
+      .toLowerCase()
+      .replace(/[^\w\s-]/g, '') // Remove special characters
+      .replace(/\s+/g, '-') // Replace spaces with hyphens
+      .replace(/-+/g, '-'); // Replace multiple hyphens with single hyphen
+      
+    setSlug(generatedSlug);
   };
 
   return (
@@ -673,6 +715,32 @@ export function AdminPage() {
                 className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="PowerStep Pulse Maxx Running Insoles"
               />
+            </div>
+
+            <div className="mb-6">
+              <label htmlFor="slug" className="block text-sm font-medium text-gray-700 mb-1">
+                URL Slug <span className="text-red-500">*</span>
+              </label>
+              <div className="flex space-x-2">
+                <input
+                  type="text"
+                  id="slug"
+                  value={slug}
+                  onChange={(e) => setSlug(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="powerstep-pulse-maxx-running-insoles"
+                />
+                <button
+                  type="button"
+                  onClick={generateSlugFromName}
+                  className="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition-colors"
+                >
+                  Auto-Generate
+                </button>
+              </div>
+              <p className="text-xs text-gray-500 mt-1">
+                URL-friendly identifier for the product (lowercase, hyphens instead of spaces)
+              </p>
             </div>
 
             <div className="mb-6">
