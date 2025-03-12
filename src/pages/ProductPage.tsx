@@ -73,23 +73,28 @@ export function ProductPage() {
           throw new Error(`Error fetching recommendation category: ${recommendationCategoryError.message}`);
         }
         
-        // Convert productId (slug) into a searchable format
-        const formattedProductName = productId.replace(/-/g, ' ');
-        
-        // Get the product by name and recommendation category
+        // Get the product by slug - direct lookup by the slug from URL
         const { data: productData, error: productError } = await supabase
           .from('products')
           .select('*')
           .eq('recommendation_category_id', recommendationCategoryData.id)
-          .ilike('name', formattedProductName)
+          .eq('slug', productId)
           .single();
           
         if (productError) {
-          throw new Error(`Error fetching product: ${productError.message}`);
+          throw new Error(`Product "${productId}" not found`);
         }
         
         if (!productData) {
           throw new Error(`Product "${productId}" not found`);
+        }
+        
+        // Process product features to ensure types are correct
+        if (productData.features) {
+          productData.features = productData.features.map((feature: { title: string; description: string; icon: string }) => ({
+            ...feature,
+            icon: typeof feature.icon === 'string' ? feature.icon : 'star' // Ensure icon is a string
+          }));
         }
         
         setProduct(productData);
@@ -131,8 +136,9 @@ export function ProductPage() {
     price: typeof product.price === 'number' ? `$${product.price}` : product.price,
     images: [product.image_url], // In the future, we can support multiple images
     features: product.features?.map(feature => ({
-      ...feature,
-      icon: iconMap[feature.icon] || Shield
+      title: feature.title,
+      description: feature.description,
+      icon: feature.icon // Keep as string for the Features component
     })) || [],
     pros: product.pros || [],
     cons: product.cons || [],

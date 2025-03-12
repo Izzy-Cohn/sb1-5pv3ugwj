@@ -11,6 +11,7 @@ interface RecommendationItemProps {
   amazonUrl?: string;
   index: number;
   rank?: number; // Keep as optional for backward compatibility
+  slug: string; // Add slug property
 }
 
 export function RecommendationItem({ 
@@ -20,10 +21,10 @@ export function RecommendationItem({
   imageUrl, 
   price, 
   amazonUrl,
-  index 
+  index,
+  slug // Add slug to destructuring
 }: RecommendationItemProps) {
-  const { slug, category } = useParams();
-  const formattedName = name.toLowerCase().replace(/\s+/g, '-');
+  const { slug: categorySlug, category } = useParams();
   
   return (
     <motion.div
@@ -64,7 +65,7 @@ export function RecommendationItem({
                 </motion.button>
               </a>
             )}
-            <Link to={`/${category}/recommendations/${slug}/${formattedName}`}>
+            <Link to={`/${category}/recommendations/${categorySlug}/${slug}`}>
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
