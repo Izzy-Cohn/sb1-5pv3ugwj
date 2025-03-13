@@ -1,0 +1,36 @@
+{
+    "name": "Brooks Addiction GTS Men's Supportive Running Shoe",
+    "slug": "brooks-addiction-gts-mens-supportive-running-shoe",
+    "brand": "Brooks",
+    "description": "A supportive running shoe designed to deliver exceptional cushioning, stability, and comfort for overpronators during long runs.",
+    "longDescription": "The Brooks Addiction GTS Men's Supportive Running Shoe is engineered for runners who demand stability without sacrificing cushioning. Its innovative midsole technology helps reduce overpronation while providing a responsive, adaptive ride. Designed with a secure fit and durable construction, this shoe offers excellent support for long-distance training and everyday workouts. Whether you’re tackling marathon distances or casual jogs, the Brooks Addiction GTS delivers performance, comfort, and lasting support.",
+    "price": "$129.99",
+    "amazonUrl": "https://www.amazon.com/Brooks-Addiction-Mens-Supportive-Running/dp/B08QXJVVXF/",
+    "videoId": "",
+    "features": [
+      {
+        "title": "Stability & Support",
+        "description": "Wider platform than other options designed for enhanced stability/balance.",
+        "icon": "star"
+      },
+      {
+        "title": "Comfortable Fit",
+        "description": "Bigger toe box with more space for bunions and hammertoes.",
+        "icon": "star"
+      },
+      {
+        "title": "Durable Construction",
+        "description": "High-quality materials and robust design ensure long-lasting performance.",
+        "icon": "star"
+      }
+    ],
+    "pros": [
+      "Wider platform than other options designed for  enhanced stability/balance",
+      "Bigger toe box with more space for bunions and hammertoes",
+      "Durable design built to withstand rigorous training"
+    ],
+    "cons": [
+      "Limited color options available"
+    ]
+  }
+  
