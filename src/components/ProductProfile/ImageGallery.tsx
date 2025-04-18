@@ -24,7 +24,7 @@ export function ImageGallery({ images }: ImageGalleryProps) {
           key={currentIndex}
           src={images[currentIndex]}
           alt="Product view"
-          className="w-full h-full object-cover"
+          className="w-full h-full object-contain"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}

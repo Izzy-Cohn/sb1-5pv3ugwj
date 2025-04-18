@@ -37,7 +37,7 @@ export function RecommendationItem({
         <img
           src={imageUrl}
           alt={name}
-          className="w-full h-full object-cover rounded-lg"
+          className="w-full h-full object-contain rounded-lg"
         />
       </div>
 
