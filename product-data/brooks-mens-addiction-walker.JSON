@@ -1,0 +1,44 @@
+{
+    "name": "Brooks Men's Addiction Walker",
+    "slug": "brooks-mens-addiction-walker",
+    "brand": "Brooks",
+    "description": "A supportive walking shoe designed for men, offering excellent cushioning and stability for everyday walking.",
+    "longDescription": "The Brooks Men's Addiction Walker is engineered for those who demand comfort and support during daily walks. Featuring advanced cushioning technology and a secure, adaptive fit, this walking shoe helps reduce impact on your feet and joints. Its durable construction and traction-enhancing outsole ensure long-lasting performance on various surfaces, making it ideal for overpronators and anyone seeking all-day comfort. With a refined design that blends stability with a modern aesthetic, this shoe is a perfect companion for an active lifestyle.",
+    "price": "$129.95",
+    "amazonUrl": "https://www.amazon.com/Brooks-Mens-Addiction-Walker-Walking/dp/B07KX39S59/",
+    "videoId": "",
+    "features": [
+      {
+        "title": "Stability & Support",
+        "description": "Engineered to provide excellent support and reduce impact during walks.",
+        "icon": "star"
+      },
+      {
+        "title": "Comfortable Fit",
+        "description": "Ergonomically designed for a secure, adaptive fit ensuring all-day comfort.",
+        "icon": "star"
+      },
+      {
+        "title": "Durable Outsole",
+        "description": "Constructed with high-quality materials for long-lasting traction and durability.",
+        "icon": "star"
+      },
+      {
+        "title": "Easy to Wear",
+        "description": "Designed for effortless wear, making it perfect for everyday use.",
+        "icon": "star"
+      }
+    ],
+    "pros": [
+      "Same as Addiction GTS but in leather for year round use",
+      "Comes in full black version",
+      "Extremely functional and durable",
+      "Good for work"
+    ],
+    "cons": [
+      "Less fashionable that other Brooks shoes",
+      "Limited color options",
+      "Not non-slip"
+    ]
+  }
+  
